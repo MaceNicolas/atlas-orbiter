@@ -18,7 +18,7 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 - **Camp** : ensemble des serviteurs d'un même côté du plateau.
 - **Salle** : une étape du donjon, qui correspond à un combat contre les serviteurs du Boss.
 - **Renfort** : phase entre deux combats où le joueur fait deux choix : un serviteur et un équipement.
-- **Équipement** : bonus qu'on équipe sur un serviteur du plateau. Il est lié aux types (section 11).
+- **Équipement** : bonus cumulatif qu'on équipe sur un serviteur du plateau, avec un **rang** comme les serviteurs (section 8).
 - **PV** : points de vie.
 - **Rang d'un serviteur** : valeur numérique qui sert aux dégâts de fin de combat (voir section 6).
 - **Rang d'un héros** : niveau de progression permanent du héros, environ 5 rangs (voir section 10). Ce n'est pas le même rang que celui d'un serviteur.
@@ -46,7 +46,7 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 - Un serviteur a : une **attaque**, des **PV**, un **rang**, des **mots-clés** et un ou deux **types** (section 11).
 - Le rang d'un serviteur vaut les **dégâts** qu'il inflige à la fin d'un combat gagné par son camp (section 6). Exemple : rang 4 = 4 dégâts, rang 2 = 2 dégâts.
 - Un serviteur a une ou plusieurs **compétences**. Chaque compétence est soit **de combat** (active pendant un combat), soit **de renfort** (active pendant la phase de renfort), **jamais les deux**.
-- Un serviteur peut porter des **équipements** (section 8). Ouvert : nombre d'équipements par serviteur, et ce qu'ils deviennent si le serviteur meurt ou est remplacé.
+- Un serviteur peut porter des **équipements** (section 8). Si le serviteur est **remplacé** par un autre, ses équipements sont **perdus** : le joueur ne les récupère pas. Ouvert : nombre maximum d'équipements par serviteur.
 - Le plateau est plein à 7 : en renfort, le joueur peut **remplacer** un de ses serviteurs par le nouveau, **sans coût**.
 - Certains donjons pourraient avoir d'autres contraintes de plateau (ouvert).
 
@@ -156,7 +156,24 @@ Les quatre déclencheurs de début et de fin sont gardés pour le moment, même 
 - Un serviteur proposé a ses compétences déjà définies, de combat ou de renfort (section 4). Intérêt visé : des dilemmes (garder un serviteur avec sa compétence de combat, ou en prendre un avec une compétence de renfort).
 - Si le plateau est plein, le joueur peut remplacer un serviteur sans coût.
 - Une **recette d'artisanat** (section 10) lie des éléments du renfort ; son fonctionnement est à préciser.
-- Ouvert : le nombre de serviteurs et d'équipements proposés, la nature des équipements et leur lien avec les types.
+- **Équipements** :
+  - Un équipement a un **rang**, qui reflète la **puissance de ses bonus** : un équipement de rang élevé est plus puissant.
+  - Ce sont des **bonus cumulatifs** : plusieurs équipements s'additionnent sur un même serviteur.
+  - Ils apportent surtout des **statistiques** et des **mots-clés supplémentaires**.
+  - Si le serviteur meurt en combat, l'équipement **n'est pas perdu** : le serviteur revient au combat suivant (section 3) avec ses équipements.
+  - Ils sont **liés aux types** par le pool (section 11), mais **dans la grande majorité des cas, ils ne sont pas limités à un type** : on peut les équiper sur n'importe quel serviteur.
+- **Niveau de renfort** : le renfort a un **niveau**, qui commence à 1 au début de la partie. Il détermine le **rang** des **serviteurs** et des **équipements** proposés : plus le niveau est élevé, plus on peut obtenir des serviteurs et des équipements de rang élevé.
+  - À chaque renfort, le joueur peut **ne pas prendre** le serviteur ou **ne pas prendre** l'équipement, pour faire monter son niveau de renfort à la place. Il n'y a pas de monnaie : le coût d'une amélioration est le **nombre de choix auxquels on renonce**.
+  - Chaque choix auquel on renonce (serviteur ou équipement, au choix du joueur) compte pour **une** amélioration.
+  - **Coût** : plus le niveau est élevé, plus il faut renoncer de fois.
+    - niveau 1 vers 2 : 2 renoncements ;
+    - niveau 2 vers 3 : 3 renoncements ;
+    - niveau 3 vers 4 : 4 renoncements, et ainsi de suite (niveau N vers N+1 : N+1 renoncements).
+  - Les renoncements **s'accumulent** d'un renfort à l'autre.
+  - **Rangs proposés** : le rang maximum des serviteurs et des équipements proposés est égal au **niveau de renfort**. Les rangs inférieurs restent possibles.
+  - Le niveau de renfort et les renoncements accumulés sont **propres à la partie** : ils ne sont pas conservés ensuite.
+  - Ouvert : le niveau maximum.
+- Ouvert : le nombre de serviteurs et d'équipements proposés.
 
 ## 9. Information avant les donjons et les combats
 
