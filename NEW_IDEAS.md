@@ -238,7 +238,36 @@ Le joueur ne dirige pas une guilde mais l'**équipage d'un vaisseau**. Cette cou
 ### Le vaisseau
 
 - Le vaisseau est le **lieu de gestion** entre deux parties. La **salle du vaisseau** (section 9) en est un premier élément.
-- Ouvert : quelles autres salles ou modules, ce que le joueur y gère (équipage, recrutement, affectation des assistants, informations sur les donjons), et le lien avec la progression des héros (section 10).
+- Ouvert : ce que le joueur gère exactement dans le vaisseau (équipage, recrutement, affectation des assistants, informations sur les donjons), et le lien avec la progression des héros (section 10).
+
+### Modules (brainstorm)
+
+- **Vocabulaire (ouvert)** : « salle » désigne déjà une étape de donjon (section 2). Pour les parties du vaisseau, « module » ou « pont » est à choisir. « Module » est utilisé ci-dessous à titre provisoire.
+- **Principe (à valider)** : chaque module améliore un axe, et ses améliorations élargissent (options, accès, informations) plutôt que de gonfler les chiffres, comme pour les héros (section 10).
+
+**Décidé**
+- **Laboratoire** : présent obligatoirement, **rôle à définir**. Pistes : ajouter des serviteurs au pool, débloquer des types, étudier les Boss, choisir ce que le vaisseau étudie.
+- **Simulateur** : un **bac à sable** où le joueur compose des plateaux avec les serviteurs et les pouvoirs de son choix, juste pour le plaisir. Il n'a **aucun rôle dans la progression**. À garder pour la fin.
+
+**Pistes (à valider)**
+
+| Module | Rôle envisagé |
+|---|---|
+| Salle des cartes (actuelle « salle du vaisseau », section 9) | Informations sur les donjons : type, puis composition des salles, puis le Boss. |
+| Propulsion | Portée du vaisseau : donjons plus lointains, plus variés et plus dangereux. |
+| Quartiers de l'équipage | Taille de l'équipage, affectation des assistants. |
+| Atelier | Artisanat : recettes et pool d'équipements (sections 8 et 10). |
+| Mess | Hub narratif : histoires et quêtes personnelles des membres d'équipage (idée d'auberge de `OLD_IDEAS.md`). |
+| Infirmerie | Adoucir les conséquences de la mort d'un héros (section 5). |
+| Soute / Armurerie | Nombre de bibelots stockables ou équipables avant un donjon. |
+| Recrutement / Communications | Arrivée de nouveaux membres d'équipage. |
+
+- Socle minimal envisagé : Salle des cartes, Propulsion, Quartiers de l'équipage, Atelier, Laboratoire.
+- Ouvert :
+  - qui porte la **montée de niveau** des héros, maintenant que le Simulateur n'a plus ce rôle ;
+  - la **ressource** qui fait progresser le vaisseau (il n'y a pas de monnaie, section 8) ;
+  - les **prérequis** entre modules, et leurs niveaux ;
+  - la limite entre puissance et variété.
 - Le **vaisseau progresse de façon durable**, d'une partie à l'autre, comme les héros (section 10). Cette progression ne contredit pas la contrainte de la section 1 : ce qui reste exclu, ce sont les choix faits *pendant* une partie qui seraient conservés ensuite.
 - Principe à garder : la progression du vaisseau **ne change pas le principe du jeu**. Elle élargit ou ajuste, sans transformer le fond d'une partie.
 - Ouvert : ce qui progresse (modules, informations, capacité d'équipage, etc.), le rythme, et la part de puissance contre la part de variété (comme pour les héros, section 10).
