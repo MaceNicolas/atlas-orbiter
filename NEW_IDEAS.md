@@ -4,14 +4,18 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 
 ## 1. Contexte
 
-- Jeu de **gestion de guilde** dans un univers de **space opera**.
-- Boucle principale : l'**exploration de donjon** avec deux héros. Les héros sont des membres de la guilde, ce sont eux que le joueur fait progresser.
+- Jeu de **gestion d'un équipage de vaisseau** dans un univers de **space opera**. Le joueur gère un équipage et son vaisseau plus qu'une guilde à proprement parler.
+- Boucle principale : l'**exploration de donjon** avec deux héros. Les héros sont des membres de l'équipage, ses **lieutenants** : ce sont eux que le joueur fait progresser. Chacun est **systématiquement assisté** d'un membre de son équipe (section 12).
 - Contrainte de design : on doit pouvoir enchaîner des **centaines de parties** sans que le fond du jeu soit totalement modifié. Les choix faits pendant une partie ne servent donc pas de progression durable : ils restent propres à cette partie.
+- La **progression du vaisseau** est l'un des **deux grands axes de progression durable** du jeu, avec celle des héros (section 10). Elle permet d'affronter des **missions plus diversifiées et plus dangereuses** (section 12), sans changer le principe du jeu.
 
 ## 2. Vocabulaire
 
 - **Partie** : une exploration de donjon, du premier combat à la victoire ou à la défaite.
-- **Héros** : membre de la guilde, au nombre de deux par partie. Commandant hors plateau, il ne combat pas.
+- **Équipage** : l'ensemble des membres du vaisseau que gère le joueur.
+- **Vaisseau** : le lieu et l'outil de gestion de l'équipage (section 12).
+- **Héros** : lieutenant de l'équipage, au nombre de deux par partie. Commandant hors plateau, il ne combat pas.
+- **Assistant** (nom provisoire) : membre de l'équipe d'un héros, qui l'assiste systématiquement (section 12).
 - **Boss** : l'adversaire unique d'un donjon. Il représente le donjon.
 - **Serviteur** : élément posé sur le plateau, qui combat. Les serviteurs du joueur représentent les héros, ceux du Boss représentent le donjon.
 - **Plateau** : zone où les serviteurs de deux camps se font face, alignés de gauche à droite. Il n'y a pas de lignes. Il contient au maximum **7 serviteurs par camp**.
@@ -25,7 +29,7 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 
 ## 3. Déroulement d'une partie
 
-1. Le joueur choisit **deux héros** de la guilde et un **donjon**.
+1. Le joueur choisit **deux héros** de l'équipage et un **donjon**.
 2. Chaque héros apporte son **serviteur de départ** : le joueur commence avec **deux serviteurs** sur son plateau.
 3. Le donjon est une suite de **salles**. Les premières sont **petites** : deux ou trois serviteurs ennemis.
 4. Dans chaque salle, un **combat** oppose le plateau du joueur au plateau du Boss.
@@ -180,6 +184,7 @@ Les quatre déclencheurs de début et de fin sont gardés pour le moment, même 
 - **Salle du vaisseau** : elle donne des informations sur les donjons à explorer. L'améliorer donne plus d'informations (par exemple le type apporté par le donjon, la composition des salles).
 - Certains **pouvoirs de renfort** ou **héros** pourraient donner des informations sur les prochains combats.
 - Ouvert : quelles informations exactement, et à quels niveaux de la salle ou de quels pouvoirs.
+- La salle du vaisseau fait partie de la gestion du vaisseau (section 12).
 
 ## 10. Progression des héros
 
@@ -211,3 +216,29 @@ Principe commun : la progression augmente la **variété** et le **choix**, avec
 - Le pool de serviteurs et d'équipements du renfort est lié à ces 5 types.
 - Chaque type a une **thématique** : certains mots-clés sont plus présents dans certains types.
 - Ouvert : la liste des types, et le cas où les deux héros partagent un type (moins de 5 types).
+
+## 12. Gestion du vaisseau et de l'équipage
+
+Le joueur ne dirige pas une guilde mais l'**équipage d'un vaisseau**. Cette couche encadre la boucle de donjon et ajoute une dimension de **personnalisation des héros**.
+
+### Équipage et assistants
+
+- Les héros sont les **lieutenants** de l'équipage.
+- Chaque héros est **systématiquement assisté d'un membre de son équipe**. Le joueur choisit donc aussi **qui assiste le héros**, ce qui s'ajoute à la configuration du héros (section 5) et sert à le personnaliser.
+- Ouvert :
+  - ce que l'assistant apporte concrètement (un pouvoir, un serviteur, un mot-clé, une statistique, un effet de renfort) ;
+  - s'il a un **type** et s'il compte dans les **5 types** de la partie (section 11) ;
+  - s'il est **choisi parmi l'équipage** ou propre à chaque héros ;
+  - s'il **progresse** (section 10) ou s'il est **fixe** ;
+  - s'il fait partie des **3 éléments** de configuration du héros ou s'y ajoute ;
+  - ce qui lui arrive si son héros **meurt** (section 5).
+- À valider : le même membre d'équipage peut-il assister plusieurs héros, ou un membre est-il affecté à un seul héros ?
+- À valider : un membre d'équipage a une **identité propre** (espèce, histoire), ce qui prolonge l'objectif d'**attachement** de la section 10 et se prête aux fiches d'espèces du dossier `descriptions/`.
+
+### Le vaisseau
+
+- Le vaisseau est le **lieu de gestion** entre deux parties. La **salle du vaisseau** (section 9) en est un premier élément.
+- Ouvert : quelles autres salles ou modules, ce que le joueur y gère (équipage, recrutement, affectation des assistants, informations sur les donjons), et le lien avec la progression des héros (section 10).
+- Le **vaisseau progresse de façon durable**, d'une partie à l'autre, comme les héros (section 10). Cette progression ne contredit pas la contrainte de la section 1 : ce qui reste exclu, ce sont les choix faits *pendant* une partie qui seraient conservés ensuite.
+- Principe à garder : la progression du vaisseau **ne change pas le principe du jeu**. Elle élargit ou ajuste, sans transformer le fond d'une partie.
+- Ouvert : ce qui progresse (modules, informations, capacité d'équipage, etc.), le rythme, et la part de puissance contre la part de variété (comme pour les héros, section 10).
