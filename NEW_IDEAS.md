@@ -178,6 +178,8 @@ Les quatre déclencheurs de début et de fin sont gardés pour le moment, même 
   - Le niveau de renfort et les renoncements accumulés sont **propres à la partie** : ils ne sont pas conservés ensuite.
   - Ouvert : le niveau maximum.
 - Ouvert : le nombre de serviteurs et d'équipements proposés.
+- **Drones** : concept **distinct des droïdes** (type, section 11). Un drone est un outil, pas un être autonome : il existe seulement comme **type d'équipement** ou comme **pouvoir spécifique**. Il peut aussi être utilisé par des ennemis dans certains donjons.
+  - Ouvert : famille d'équipements, ou pouvoir (de héros, de serviteur) ; ce qu'un drone apporte concrètement.
 
 ## 9. Information avant les donjons et les combats
 
@@ -215,6 +217,8 @@ Principe commun : la progression augmente la **variété** et le **choix**, avec
 - Deux héros apportent jusqu'à 4 types, et chaque **donjon** apporte **un type** : **5 types** pour une partie.
 - Le pool de serviteurs et d'équipements du renfort est lié à ces 5 types.
 - Chaque type a une **thématique** : certains mots-clés sont plus présents dans certains types.
+- Les **espèces** sont des types, de nature « espèce » : **Elk** et **Dwork** (fiches dans `descriptions/`), et **Droïde**.
+- **Droïde** est un **type**. Les droïdes peuvent être des héros (lieutenants), de simples membres d'équipage (dont des assistants, section 12) ou des ennemis dans certains donjons. Un droïde est un être autonome, avec une identité, à ne pas confondre avec un **drone** (section 8).
 - Ouvert : la liste des types, et le cas où les deux héros partagent un type (moins de 5 types).
 
 ## 12. Gestion du vaisseau et de l'équipage
@@ -224,6 +228,7 @@ Le joueur ne dirige pas une guilde mais l'**équipage d'un vaisseau**. Cette cou
 ### Équipage et assistants
 
 - Les héros sont les **lieutenants** de l'équipage.
+- Les **droïdes** (type, section 11) peuvent être lieutenants ou simples membres d'équipage, comme les autres types.
 - Chaque héros est **systématiquement assisté d'un membre de son équipe**. Le joueur choisit donc aussi **qui assiste le héros**, ce qui s'ajoute à la configuration du héros (section 5) et sert à le personnaliser.
 - Ouvert :
   - ce que l'assistant apporte concrètement (un pouvoir, un serviteur, un mot-clé, une statistique, un effet de renfort) ;
