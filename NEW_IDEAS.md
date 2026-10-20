@@ -218,6 +218,7 @@ Principe commun : la progression augmente la **variété** et le **choix**, avec
 - Le pool de serviteurs et d'équipements du renfort est lié à ces 5 types.
 - Chaque type a une **thématique** : certains mots-clés sont plus présents dans certains types.
 - Les **espèces** sont des types, de nature « espèce » : **Elk** et **Dwork** (fiches dans `descriptions/`), et **Droïde**.
+- Type possible : une espèce de **félins humanoïdes**, **sans nom pour le moment** (images dans `inspiration/cat/`). Fiche non rédigée.
 - **Droïde** est un **type**. Les droïdes peuvent être des héros (lieutenants), de simples membres d'équipage (dont des assistants, section 12) ou des ennemis dans certains donjons. Un droïde est un être autonome, avec une identité, à ne pas confondre avec un **drone** (section 8).
 - Ouvert : la liste des types, et le cas où les deux héros partagent un type (moins de 5 types).
 
