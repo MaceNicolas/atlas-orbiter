@@ -20,7 +20,9 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 - **Plateau** : zone où les serviteurs de deux camps se font face, alignés de gauche à droite. Il n'y a pas de lignes. Il contient au maximum **7 serviteurs par camp**.
 - **Camp** : ensemble des serviteurs d'un même côté du plateau.
 - **Salle** : une étape du donjon, qui correspond à un combat contre les serviteurs du Boss.
-- **Renfort** : phase qui précède chaque combat, y compris le premier, où le joueur fait deux choix : un serviteur et un équipement.
+- **Renfort** : phase qui précède chaque combat, y compris le premier, où le joueur dépense sa monnaie pour recruter des serviteurs, acquérir des équipements ou faire monter le niveau de renfort.
+- **Datacron** : monnaie unique du renfort (nom provisoire, section 8).
+- **Main** : réserve de serviteurs et d'équipements acquis, que le joueur pose ensuite lui-même sur le plateau (section 8).
 - **Équipement** : bonus cumulatif qu'on équipe sur un serviteur du plateau, avec un **rang** comme les serviteurs (section 8).
 - **PV** : points de vie.
 - **Rang d'un serviteur** : valeur numérique qui sert aux dégâts de fin de combat (voir section 6).
@@ -29,11 +31,13 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 ## 3. Déroulement d'une partie
 
 1. Le joueur choisit **deux héros** de l'équipage et un **donjon**.
-2. Chaque héros apporte son **serviteur de départ** : le joueur commence avec **deux serviteurs** sur son plateau.
+2. Le plateau du joueur commence **vide** : les héros n'ont **pas de serviteur attitré** pour le moment, et les premiers serviteurs viennent du premier renfort.
 3. Le donjon est une suite de **salles**. Les premières sont **petites** : deux ou trois serviteurs ennemis.
-4. Chaque salle commence par un **renfort**, **y compris la première** : le donjon débute donc par un renfort. Le joueur fait **deux choix gratuits** (la monnaie sert à aller plus loin, section 8) :
-   - **un serviteur** parmi plusieurs ;
-   - **un équipement** parmi plusieurs, à équiper sur un serviteur du plateau.
+4. Chaque salle commence par un **renfort**, **y compris la première** : le donjon débute donc par un renfort. Le joueur reçoit des **Datacrons** (leur nombre dépend de la salle) et les dépense (section 8) :
+   - **choisir un serviteur** parmi 3 ;
+   - **choisir un équipement** parmi 3 ;
+   - **faire monter le niveau de renfort**.
+   Il n'y a **aucun choix gratuit**. Ce qu'il acquiert va dans sa **main**, puis il le pose lui-même sur le plateau.
 5. Puis un **combat** oppose le plateau du joueur au plateau du Boss.
 6. La partie se termine :
    - **victoire** : les PV du Boss tombent à 0 ;
@@ -51,22 +55,21 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 - Le rang d'un serviteur vaut les **dégâts** qu'il inflige à la fin d'un combat gagné par son camp (section 6). Exemple : rang 4 = 4 dégâts, rang 2 = 2 dégâts.
 - Un serviteur a une ou plusieurs **compétences**. Chaque compétence est soit **de combat** (active pendant un combat), soit **de renfort** (active pendant la phase de renfort), **jamais les deux**.
 - Un serviteur peut porter des **équipements** (section 8). Si le serviteur est **remplacé** par un autre, ses équipements sont **perdus** : le joueur ne les récupère pas. Ouvert : nombre maximum d'équipements par serviteur.
-- Le plateau est plein à 7 : en renfort, le joueur peut **remplacer** un de ses serviteurs par le nouveau, **sans coût**.
+- Le plateau est plein à 7 : en renfort, le joueur peut **remplacer** un de ses serviteurs par un serviteur de sa main, **sans coût** (le remplacé est perdu avec ses équipements).
 - Certains donjons pourraient avoir d'autres contraintes de plateau (ouvert).
 
 ## 5. Héros et Boss
 
 ### Héros
 
-- Chaque héros a des **PV propres**, un ou plusieurs **pouvoirs**, **deux types** différents et un **serviteur de départ**.
+- Chaque héros a des **PV propres**, un ou plusieurs **pouvoirs**, **deux types** différents. Un héros n'a pas de serviteur attitré pour le moment.
 - Il ne participe pas au combat, il reste hors plateau. Il ne subit des dégâts qu'en fin de combat perdu (section 6).
 - **Configuration** : un héros est configuré avec **3 éléments**, choisis parmi :
   - des **mots-clés de héros** (par exemple Provocation, Bouclier divin) ;
   - un **pouvoir spécifique** (ou une variante de pouvoir) ;
   - des **points de vie** (variantes) ;
   - un **pouvoir de renfort** ;
-  - un **bibelot** (section 10) ;
-  - son **serviteur de départ**.
+  - un **bibelot** (section 10).
   - Un élément obligatoire n'est pas certain ; la version **libre** est favorisée pour le moment (ouvert).
 - **Pouvoirs de héros** : ils peuvent agir pendant le combat, au début ou à la fin du combat, ou au début ou à la fin du renfort.
 - Si un héros meurt (PV à 0), l'autre **continue le donjon seul**, **sans** bénéficier des pouvoirs du héros mort. Les effets d'une mort sur la difficulté ou les récompenses sont ouverts.
@@ -167,12 +170,16 @@ Les quatre déclencheurs de début et de fin sont gardés pour le moment, même 
 
 ## 8. Renfort
 
-- Avant chaque combat, **un renfort**. À chaque renfort, le joueur fait **deux choix gratuits**, systématiquement (la monnaie, voir plus bas, sert à aller plus loin) :
-  1. **un serviteur** parmi plusieurs ;
-  2. **un équipement** parmi plusieurs, à équiper sur un serviteur du plateau.
+- Avant chaque combat, **un renfort**. Le joueur y dispose de **Datacrons** (voir « Datacron » plus bas), qu'il dépense librement entre trois usages :
+  1. **choisir un serviteur** parmi 3 propositions ;
+  2. **choisir un équipement** parmi 3 propositions ;
+  3. **faire monter le niveau de renfort**.
+- **Aucun choix gratuit**, **pas de relance**, **pas de prix par objet** : un choix coûte toujours le même nombre de Datacrons, quel que soit le rang de ce qu'on obtient. La puissance vient du niveau de renfort, pas du prix.
 - Les serviteurs et les équipements proposés sont tirés d'un **pool** lié aux **5 types** de la partie (section 11).
 - Un serviteur proposé a ses compétences déjà définies, de combat ou de renfort (section 4). Intérêt visé : des dilemmes (garder un serviteur avec sa compétence de combat, ou en prendre un avec une compétence de renfort).
-- Si le plateau est plein, le joueur peut remplacer un serviteur sans coût.
+- **Main** : un serviteur ou un équipement acquis va d'abord dans la **main** du joueur. C'est le joueur qui le **pose** ensuite sur le plateau (un équipement se pose sur un serviteur du plateau). La main permet aussi de garder des paires en attente avant une fusion.
+  - Si le plateau est plein, le joueur peut remplacer un serviteur par un serviteur de sa main, sans coût.
+  - Ouvert : taille de la main et son lien avec les 7 places du plateau ; moment de la pose (pendant le renfort seulement ?) ; sort de la main au moment du combat ; possibilité de reprendre un serviteur du plateau dans la main.
 - Une **recette d'artisanat** (section 10) lie des éléments du renfort ; son fonctionnement est à préciser.
 - **Équipements** :
   - Un équipement a un **rang**, qui reflète la **puissance de ses bonus** : un équipement de rang élevé est plus puissant.
@@ -180,22 +187,23 @@ Les quatre déclencheurs de début et de fin sont gardés pour le moment, même 
   - Ils apportent surtout des **statistiques** et des **mots-clés supplémentaires**.
   - Si le serviteur meurt en combat, l'équipement **n'est pas perdu** : le serviteur revient au combat suivant (section 3) avec ses équipements.
   - Ils sont **liés aux types** par le pool (section 11), mais **dans la grande majorité des cas, ils ne sont pas limités à un type** : on peut les équiper sur n'importe quel serviteur.
-- **Niveau de renfort** : le renfort a un **niveau**, qui commence à 1 au début de la partie. Il détermine le **rang** des **serviteurs** et des **équipements** proposés : plus le niveau est élevé, plus on peut obtenir des serviteurs et des équipements de rang élevé.
-  - À chaque renfort, le joueur peut **ne pas prendre** le serviteur ou **ne pas prendre** l'équipement, pour faire monter son niveau de renfort à la place. Dans ce système, le coût d'une amélioration est le **nombre de choix auxquels on renonce**. Ouvert : ce système est à confirmer ou à remplacer par la monnaie (voir « Monnaie et relances »).
-  - Chaque choix auquel on renonce (serviteur ou équipement, au choix du joueur) compte pour **une** amélioration.
-  - **Coût** : plus le niveau est élevé, plus il faut renoncer de fois.
-    - niveau 1 vers 2 : 2 renoncements ;
-    - niveau 2 vers 3 : 3 renoncements ;
-    - niveau 3 vers 4 : 4 renoncements, et ainsi de suite (niveau N vers N+1 : N+1 renoncements).
-  - Les renoncements **s'accumulent** d'un renfort à l'autre.
-  - **Rangs proposés** : le rang maximum des serviteurs et des équipements proposés est égal au **niveau de renfort**. Les rangs inférieurs restent possibles.
-  - Le niveau de renfort et les renoncements accumulés sont **propres à la partie** : ils ne sont pas conservés ensuite.
-  - Ouvert : le niveau maximum.
-- Ouvert : le nombre de serviteurs et d'équipements proposés.
+- **Niveau de renfort** : le renfort a un **niveau**, qui commence à 1 au début de la partie. Il détermine le **rang maximum** des **serviteurs** et des **équipements** proposés : plus le niveau est élevé, plus on peut obtenir des serviteurs et des équipements de rang élevé. Les rangs inférieurs restent possibles.
+  - **Progression** : le joueur **contribue** avec des Datacrons, **progressivement**, d'un renfort à l'autre. La contribution s'accumule jusqu'au coût du niveau suivant.
+  - **Coût** : de plus en plus élevé. Valeur de départ à tester : niveau N vers N+1 coûte **N+1 Datacrons** (2, 3, 4…).
+  - Le niveau de renfort et les contributions sont **propres à la partie** : ils ne sont pas conservés ensuite.
+  - Ouvert : le niveau maximum ; la valeur exacte de la courbe de coûts.
+- **Datacron** (nom provisoire) : monnaie **unique** du renfort.
+  - **Revenu variable selon la salle** : chaque salle rapporte plus ou moins de Datacrons. Le revenu est connu à l'avance si les informations du vaisseau le permettent (section 9). Un **minimum garanti** évite les renforts morts. Valeur de départ à tester : 2 à 5 par salle.
+  - **Conservation** : les Datacrons non dépensés sont **conservés** d'un renfort à l'autre, ce qui permet de planifier (économiser avant une salle riche).
+  - **Coût d'un choix** : 1 Datacron pour un serviteur, 1 pour un équipement. À tester.
+  - Les **héros** et certains archétypes (Diplomate, Ingénieur, Explorateur, Renseignement : voir `documentation/types/archetypes.md`) pourraient jouer sur cette économie : revenu supplémentaire, choix moins cher pour un type ou une catégorie, coût de montée de niveau réduit. Un **coût minimal de 1** éviterait les choix gratuits.
+  - **Seconde ressource, d'une autre nature** : l'énergie des bibelots (section 10) et le coût d'**Activation (X)** (section 7). Elle sert à activer et non à acquérir. Définir la ressource d'Activation y serait lié.
+  - Ouvert : revenu exact par salle ; risque d'un jeu trop prudent à cause de la conservation (à surveiller) ; vente d'un serviteur ; nom définitif de la monnaie ; thématisation (crédits, butin, énergie du vaisseau).
 - **Fusion de trois serviteurs identiques (serviteur doré)**, reprise des Champs de bataille de Hearthstone :
-  - Quand le joueur possède **trois serviteurs identiques**, sur le plateau ou dans sa **main** (concept dont on reparlera), ils **fusionnent automatiquement** en un **serviteur doré**.
+  - Quand le joueur possède **trois serviteurs identiques**, sur le plateau ou dans sa **main**, ils **fusionnent automatiquement** en un **serviteur doré**.
   - Le serviteur doré reprend **toutes leurs statistiques**, et sa **compétence est plus puissante** que celle du serviteur de base.
-  - Ensuite, le joueur choisit **un serviteur parmi trois**, d'un **niveau supérieur au niveau de renfort actuel** **(à valider : rang égal au niveau de renfort + 1)**. Cela dépasse le rang maximum normalement proposé (voir ci-dessous), ce qui fait de la fusion une récompense.
+  - Ensuite, le joueur choisit **un serviteur parmi trois**, d'un **niveau supérieur au niveau de renfort actuel** **(à valider : rang égal au niveau de renfort + 1)**. Cela dépasse le rang maximum normalement proposé, ce qui fait de la fusion une récompense.
+  - **Fréquence** : sans relance, avec 3 propositions par choix, trois exemplaires identiques sont **rares**. La fusion est gardée, mais elle dépendra surtout de la taille du pool et du nombre d'exemplaires par serviteur ; à vérifier au prototype.
   - Ouvert :
     - le calcul des statistiques : somme des trois serviteurs, avec leurs bonus et équipements, ou statistiques de base multipliées ;
     - le sort des **équipements** des trois serviteurs (cumul, conservation, perte) ;
@@ -204,17 +212,8 @@ Les quatre déclencheurs de début et de fin sont gardés pour le moment, même 
     - ce qui compte comme « identique » (même serviteur, indépendamment des statistiques et équipements) ;
     - le nom du serviteur fusionné (« doré » est provisoire) ;
     - l'interaction avec le plateau plein : la fusion libère deux places, et le serviteur de remplacement est proposé comme un renfort ;
-    - la distinction avec le mot-clé **Magnétisme** (section 7), qui parle aussi de fusion.
-- **Monnaie et relances** : pour que les fusions restent possibles, une **monnaie unique** est retenue **pour le moment**. Constat : avec 3 propositions et un choix par renfort, les fusions sont rares, et d'autant plus que le rang monte (le pool s'élargit avec le niveau de renfort). Les fusions se feraient surtout sur les bas rangs, ce qui est jugé logique, la récompense du doré compensant. Le sort des **renoncements** pour monter de niveau est **à trancher** : la monnaie pourrait les remplacer.
-  - **Une même monnaie** pour les serviteurs et pour les équipements (et non une par catégorie), pour garder des arbitrages entre relancer, acheter et monter de niveau. Elle pourrait être thématisée : crédits, butin, énergie du vaisseau.
-  - **Deux choix gratuits à chaque renfort, systématiquement** : un serviteur et un équipement. La monnaie sert à **aller plus loin** : relancer, monter de niveau, et peut-être acheter un choix supplémentaire (ouvert).
-  - **Relance d'une seule ligne, au choix du joueur** : dépenser de la monnaie relance soit les serviteurs, soit les équipements, jamais les deux à la fois. Le prix de base est le même.
-  - **Prix** : le prix d'un serviteur ou d'un équipement suit son **rang**. Les **héros** peuvent modifier les prix (par type, par catégorie, ou sur la relance), de même que certains archétypes (Diplomate, Ingénieur, Explorateur, Renseignement : voir `documentation/types/archetypes.md`). Un **prix minimal de 1** évite les achats gratuits quand les réductions se cumulent.
-  - **Relance ciblée sur un type** : par défaut, les propositions viennent au hasard des 5 types de la partie, sans frais. Une relance ciblée sur un type précis coûte **plus** qu'une relance normale (par exemple 2 contre 1), sans être une taxe systématique. Les héros peuvent réduire ce coût pour leurs propres types. Pour les équipements, un ciblage par catégorie ou par rang est préférable à un ciblage par type, car ils sont presque tous utilisables par n'importe quel serviteur.
-  - Le prix du ciblage règle aussi la **fréquence des fusions** : cibler un type réduit beaucoup le nombre de serviteurs possibles.
-  - **Seconde ressource, d'une autre nature** : l'énergie des bibelots (section 10) et le coût d'**Activation (X)** (section 7). Elle sert à activer et non à acheter. Définir la ressource d'Activation y serait lié.
-  - **Main** : le joueur peut garder des serviteurs dans une **main**, ce qui permet de conserver des paires en attente avant une fusion. Idée jugée très bonne, concept à développer.
-  - Ouvert : revenu (fixe par salle, croissant, ou lié au résultat du combat) ; coût de la relance et du niveau ; vente d'un serviteur ; taille de la main et son lien avec les 7 places du plateau ; possibilité d'acheter un choix supplémentaire ; nombre d'exemplaires par serviteur et taille du pool par rang ; nombre de propositions (3 à 5) ; fréquence de fusion visée ; sort des renoncements.
+    - la distinction avec le mot-clé **Magnétisme** (section 7), qui parle aussi de fusion ;
+    - nombre d'exemplaires par serviteur et taille du pool par rang.
 - **Drones** : concept **distinct des droïdes** (type, section 11). Un drone est un outil, pas un être autonome : il existe seulement comme **type d'équipement** ou comme **pouvoir spécifique**. Il peut aussi être utilisé par des ennemis dans certains donjons.
   - Ouvert : famille d'équipements, ou pouvoir (de héros, de serviteur) ; ce qu'un drone apporte concrètement.
 
@@ -315,3 +314,6 @@ Ces idées ne sont plus d'actualité. On garde la raison de l'abandon pour ne pa
 | Idée | Raison de l'abandon |
 |---|---|
 | **Assistant lié à chaque héros** : chaque héros aurait été systématiquement assisté d'un membre de l'équipage, choisi par le joueur en plus de la configuration du héros. | Le donjon commence maintenant par un **renfort** (section 3), qui donne au joueur un premier choix avant tout combat. L'assistant devenait inutile, et il alourdissait la configuration du héros. Ce qu'il devait apporter n'avait jamais été tranché. |
+| **Deux choix gratuits par renfort** (un serviteur, un équipement), la monnaie servant seulement à aller plus loin. | Remplacés par une économie de **Datacrons** : tout choix se paie, avec un revenu variable selon la salle (section 8). Le plancher gratuit retirait de la tension et rendait la monnaie secondaire. |
+| **Renoncements** : renoncer à un choix pour faire monter le niveau de renfort. | La monnaie remplit ce rôle : le niveau de renfort se finance par contributions de Datacrons (section 8). |
+| **Relance** (d'une ligne, ciblée sur un type) et **prix par objet suivant le rang**. | Retirés dans le modèle des Datacrons : un choix coûte toujours le même nombre de Datacrons, la puissance vient du niveau de renfort. Leur absence rend la fusion rare, à vérifier au prototype. |
