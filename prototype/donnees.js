@@ -42,73 +42,81 @@ function skDesc(k) {
     debuffRandomEnemy: `retire ${k.n} ATQ à un ennemi aléatoire`,
     buffEquippedAlly: `${bf} à un allié équipé`,
     buffPerType: `${bf} par type différent dans votre équipe (max 3)`,
-    summon: `invoque un automate ${k.a}/${k.h} à sa droite`
+    summon: `invoque une sonde ${k.a}/${k.h} à sa droite`,
+    buffAdjacent: `${bf} aux alliés adjacents`
   }[k.fx];
   return `${TRIG[k.t]} : ${d}`;
 }
 
 // Types (documentation/types/) : espèces = ce qu'est le serviteur, archétypes = comment il se joue.
-// Une seule famille de types pour les règles. Félin : espèce possible, sans nom (provisoire).
-const SPECIES = ['Elk', 'Dwork', 'Droïde', 'Félin'];
-const ARCHETYPES = ['Pilote', 'Ingénieur', 'Médecin', 'Sécurité', 'Explorateur', 'Artilleur', 'Renseignement', 'Roboticien', 'Xénobiologiste'];
+// Une seule famille de types pour les règles. Chaque serviteur a une espèce et un archétype obligatoire.
+// Félin : espèce possible, sans nom (provisoire).
+const SPECIES = ['Humain', 'Elk', 'Dwork', 'Droïde', 'Félin'];   // Humain : espèce générique, par défaut
+const ARCHETYPES = ['Pilote', 'Ingénieur', 'Médecin', 'Sécurité', 'Explorateur', 'Artilleur', 'Renseignement', 'Roboticien', 'Xénobiologiste', 'Diplomate'];
 const ALL_TYPES = [...SPECIES, ...ARCHETYPES];
 
 const S = (name, rank, atk, hp, types, kw = [], skill = null) => ({ name, rank, atk, hp, types, kw, skill });
 const SERVANTS = [
   // Pilote : ouverture, rythme (le plus à gauche attaque en premier)
-  S('Apprenti pilote', 1, 2, 3, ['Pilote'], [], sk('startCombat', 'buffLeftmost', 1, 0)),
-  S('Pilote de chasse', 2, 3, 3, ['Pilote'], [], sk('startCombat', 'buffLeftmost', 2, 0)),
-  S('As de la passerelle', 3, 4, 4, ['Pilote'], [], sk('startCombat', 'buffLeftmost', 2, 1)),
-  S('Commandant de vol', 4, 5, 6, ['Pilote'], [], sk('startCombat', 'buffAllies', 1, 0)),
-  S('Maître d\'escadre', 5, 6, 8, ['Pilote'], [], sk('startCombat', 'buffLeftmost', 4, 2)),
+  S('Apprenti pilote', 1, 2, 3, ['Elk', 'Pilote'], [], sk('startCombat', 'buffLeftmost', 1, 0)),
+  S('Pilote de chasse', 2, 3, 3, ['Humain', 'Pilote'], [], sk('startCombat', 'buffLeftmost', 2, 0)),
+  S('As de la passerelle', 3, 4, 4, ['Dwork', 'Pilote'], [], sk('startCombat', 'buffLeftmost', 2, 1)),
+  S('Commandant de vol', 4, 5, 6, ['Humain', 'Pilote'], [], sk('startCombat', 'buffAllies', 1, 0)),
+  S('Maître d\'escadre', 5, 6, 8, ['Droïde', 'Pilote'], [], sk('startCombat', 'buffLeftmost', 4, 2)),
   // Ingénieur : renforcer via les équipements, Bouclier divin
-  S('Mécano', 1, 1, 3, ['Ingénieur'], [], sk('startCombat', 'buffEquippedAlly', 1, 0)),
-  S('Technicien', 2, 2, 4, ['Ingénieur'], [], sk('endRenfort', 'buffRandomAlly', 1, 1)),
-  S('Spécialiste des systèmes', 3, 2, 5, ['Ingénieur'], ['shield'], sk('startCombat', 'buffEquippedAlly', 2, 0)),
-  S('Chef mécanicien', 4, 4, 7, ['Ingénieur'], [], sk('startCombat', 'buffEquippedAlly', 2, 2)),
-  S('Ingénieur en chef', 5, 5, 9, ['Ingénieur'], ['shield'], sk('startCombat', 'buffAllies', 1, 1)),
+  S('Mécano', 1, 1, 3, ['Humain', 'Ingénieur'], [], sk('startCombat', 'buffEquippedAlly', 1, 0)),
+  S('Technicien', 2, 2, 4, ['Droïde', 'Ingénieur'], [], sk('endRenfort', 'buffRandomAlly', 1, 1)),
+  S('Spécialiste des systèmes', 3, 2, 5, ['Humain', 'Ingénieur'], ['shield'], sk('startCombat', 'buffEquippedAlly', 2, 0)),
+  S('Chef mécanicien', 4, 4, 7, ['Félin', 'Ingénieur'], [], sk('startCombat', 'buffEquippedAlly', 2, 2)),
+  S('Ingénieur en chef', 5, 5, 9, ['Humain', 'Ingénieur'], ['shield'], sk('startCombat', 'buffAllies', 1, 1)),
   // Médecin : prévention des dégâts, PV
-  S('Infirmier', 1, 1, 3, ['Médecin'], [], sk('endRenfort', 'buffRandomAlly', 0, 2)),
-  S('Médecin de terrain', 2, 2, 4, ['Médecin'], [], sk('startCombat', 'buffRandomAlly', 0, 3)),
-  S('Chirurgien', 3, 3, 5, ['Médecin'], [], sk('startCombat', 'buffAllies', 0, 2)),
-  S('Médecin-chef', 4, 4, 7, ['Médecin'], [], sk('deathrattle', 'buffAllies', 1, 2)),
-  S('Praticien légendaire', 5, 5, 9, ['Médecin'], [], sk('startCombat', 'buffAllies', 1, 3)),
+  S('Infirmier', 1, 1, 3, ['Félin', 'Médecin'], [], sk('endRenfort', 'buffRandomAlly', 0, 2)),
+  S('Médecin de terrain', 2, 2, 4, ['Humain', 'Médecin'], [], sk('startCombat', 'buffRandomAlly', 0, 3)),
+  S('Chirurgien', 3, 3, 5, ['Elk', 'Médecin'], [], sk('startCombat', 'buffAllies', 0, 2)),
+  S('Médecin-chef', 4, 4, 7, ['Humain', 'Médecin'], [], sk('deathrattle', 'buffAllies', 1, 2)),
+  S('Praticien légendaire', 5, 5, 9, ['Dwork', 'Médecin'], [], sk('startCombat', 'buffAllies', 1, 3)),
   // Sécurité : Provocation, Bouclier divin
-  S('Vigile', 1, 1, 4, ['Sécurité'], ['prov']),
-  S('Garde d\'abordage', 2, 2, 5, ['Sécurité'], ['prov']),
-  S('Sergent de sécurité', 3, 3, 6, ['Sécurité'], ['prov'], sk('startCombat', 'buffSelf', 0, 2)),
-  S('Chef de la sécurité', 4, 4, 8, ['Sécurité'], ['prov', 'shield']),
-  S('Commandant de bord', 5, 6, 11, ['Sécurité'], ['prov', 'shield'], sk('startCombat', 'buffAllies', 0, 2)),
+  S('Vigile', 1, 1, 4, ['Humain', 'Sécurité'], ['prov']),
+  S('Garde d\'abordage', 2, 2, 5, ['Dwork', 'Sécurité'], ['prov']),
+  S('Sergent de sécurité', 3, 3, 6, ['Humain', 'Sécurité'], ['prov'], sk('startCombat', 'buffSelf', 0, 2)),
+  S('Chef de la sécurité', 4, 4, 8, ['Droïde', 'Sécurité'], ['prov', 'shield']),
+  S('Commandant de bord', 5, 6, 11, ['Humain', 'Sécurité'], ['prov', 'shield'], sk('startCombat', 'buffAllies', 0, 2)),
   // Explorateur : À distance, récompense de la diversité de types
-  S('Éclaireur', 1, 2, 2, ['Explorateur'], ['ranged']),
-  S('Sondeur planétaire', 2, 2, 4, ['Explorateur'], [], sk('startCombat', 'buffPerType', 1, 0)),
-  S('Cartographe', 3, 3, 5, ['Explorateur'], ['ranged'], sk('startCombat', 'buffPerType', 1, 0)),
-  S('Chasseur de reliques', 4, 4, 6, ['Explorateur'], ['ranged'], sk('startCombat', 'buffPerType', 1, 1)),
-  S('Grand explorateur', 5, 6, 7, ['Explorateur'], ['ranged'], sk('startCombat', 'buffPerType', 1, 1)),
+  S('Éclaireur', 1, 2, 2, ['Droïde', 'Explorateur'], ['ranged']),
+  S('Sondeur planétaire', 2, 2, 4, ['Humain', 'Explorateur'], [], sk('startCombat', 'buffPerType', 1, 0)),
+  S('Cartographe', 3, 3, 5, ['Félin', 'Explorateur'], ['ranged'], sk('startCombat', 'buffPerType', 1, 0)),
+  S('Chasseur de reliques', 4, 4, 6, ['Humain', 'Explorateur'], ['ranged'], sk('startCombat', 'buffPerType', 1, 1)),
+  S('Grand explorateur', 5, 6, 7, ['Elk', 'Explorateur'], ['ranged'], sk('startCombat', 'buffPerType', 1, 1)),
   // Artilleur : À distance, dégâts directs
-  S('Tireur', 1, 3, 2, ['Artilleur'], ['ranged']),
-  S('Canonnier', 2, 3, 3, ['Artilleur'], ['ranged']),
-  S('Tireur d\'élite', 3, 4, 4, ['Artilleur'], ['ranged'], sk('startCombat', 'buffSelf', 1, 0)),
-  S('Maître-artilleur', 4, 5, 5, ['Artilleur'], ['ranged'], sk('startCombat', 'dmgRandomEnemy', 0, 0, 3)),
-  S('Bombardier', 5, 7, 7, ['Artilleur'], ['ranged'], sk('startCombat', 'dmgRandomEnemy', 0, 0, 4)),
+  S('Tireur', 1, 3, 2, ['Humain', 'Artilleur'], ['ranged']),
+  S('Canonnier', 2, 3, 3, ['Elk', 'Artilleur'], ['ranged']),
+  S('Tireur d\'élite', 3, 4, 4, ['Humain', 'Artilleur'], ['ranged'], sk('startCombat', 'buffSelf', 1, 0)),
+  S('Maître-artilleur', 4, 5, 5, ['Dwork', 'Artilleur'], ['ranged'], sk('startCombat', 'dmgRandomEnemy', 0, 0, 3)),
+  S('Bombardier', 5, 7, 7, ['Humain', 'Artilleur'], ['ranged'], sk('startCombat', 'dmgRandomEnemy', 0, 0, 4)),
   // Renseignement : affaiblir l'adversaire
-  S('Agent', 1, 2, 2, ['Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 1)),
-  S('Intrus réseau', 2, 2, 3, ['Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 2)),
-  S('Saboteur', 3, 3, 4, ['Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 3)),
-  S('Maître espion', 4, 4, 6, ['Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 4)),
-  S('Spectre', 5, 6, 6, ['Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 5)),
-  // Roboticien : invoquer des automates
-  S('Opérateur de sonde', 1, 1, 2, ['Roboticien'], [], sk('startCombat', 'summon', 1, 1)),
-  S('Opérateur d\'essaim', 2, 2, 3, ['Roboticien'], [], sk('startCombat', 'summon', 1, 1)),
-  S('Chef d\'atelier', 3, 2, 5, ['Roboticien'], [], sk('startCombat', 'summon', 2, 2)),
-  S('Maître des automates', 4, 3, 6, ['Roboticien'], [], sk('startCombat', 'summon', 3, 3)),
-  S('Architecte d\'essaim', 5, 4, 8, ['Roboticien'], [], sk('startCombat', 'summon', 4, 4)),
+  S('Agent', 1, 2, 2, ['Dwork', 'Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 1)),
+  S('Intrus réseau', 2, 2, 3, ['Humain', 'Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 2)),
+  S('Saboteur', 3, 3, 4, ['Droïde', 'Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 3)),
+  S('Maître espion', 4, 4, 6, ['Humain', 'Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 4)),
+  S('Spectre', 5, 6, 6, ['Félin', 'Renseignement'], [], sk('startCombat', 'debuffRandomEnemy', 0, 0, 5)),
+  // Roboticien : invoquer des sondes
+  S('Opérateur de sonde', 1, 1, 2, ['Humain', 'Roboticien'], [], sk('startCombat', 'summon', 1, 1)),
+  S('Opérateur d\'essaim', 2, 2, 3, ['Félin', 'Roboticien'], [], sk('startCombat', 'summon', 1, 1)),
+  S('Chef d\'atelier', 3, 2, 5, ['Humain', 'Roboticien'], [], sk('startCombat', 'summon', 2, 2)),
+  S('Maître des sondes', 4, 3, 6, ['Elk', 'Roboticien'], [], sk('startCombat', 'summon', 3, 3)),
+  S('Architecte d\'essaim', 5, 4, 8, ['Humain', 'Roboticien'], [], sk('startCombat', 'summon', 4, 4)),
   // Xénobiologiste : Poison, Renaissance, effets de mort
-  S('Assistant de labo', 1, 2, 2, ['Xénobiologiste'], [], sk('deathrattle', 'buffRandomAlly', 1, 1)),
-  S('Spécialiste des organismes', 2, 1, 3, ['Xénobiologiste'], ['poison']),
-  S('Symbiote', 3, 3, 5, ['Xénobiologiste'], ['rebirth']),
-  S('Généticien', 4, 4, 6, ['Xénobiologiste'], ['poison'], sk('deathrattle', 'buffAllies', 1, 1)),
-  S('Maître des mutations', 5, 6, 8, ['Xénobiologiste'], ['poison', 'rebirth'], sk('startCombat', 'dmgRandomEnemy', 0, 0, 3)),
+  S('Assistant de labo', 1, 2, 2, ['Elk', 'Xénobiologiste'], [], sk('deathrattle', 'buffRandomAlly', 1, 1)),
+  S('Spécialiste des organismes', 2, 1, 3, ['Humain', 'Xénobiologiste'], ['poison']),
+  S('Symbiote', 3, 3, 5, ['Dwork', 'Xénobiologiste'], ['rebirth']),
+  S('Généticien', 4, 4, 6, ['Humain', 'Xénobiologiste'], ['poison'], sk('deathrattle', 'buffAllies', 1, 1)),
+  S('Maître des mutations', 5, 6, 8, ['Droïde', 'Xénobiologiste'], ['poison', 'rebirth'], sk('startCombat', 'dmgRandomEnemy', 0, 0, 3)),
+  // Diplomate : bonus aux alliés adjacents
+  S('Attaché de liaison', 1, 1, 4, ['Humain', 'Diplomate'], [], sk('startCombat', 'buffAdjacent', 1, 0)),
+  S('Officier de liaison', 2, 1, 5, ['Droïde', 'Diplomate'], [], sk('startCombat', 'buffAdjacent', 1, 1)),
+  S('Négociateur', 3, 2, 6, ['Humain', 'Diplomate'], [], sk('startCombat', 'buffAdjacent', 2, 1)),
+  S('Ambassadeur', 4, 3, 7, ['Félin', 'Diplomate'], [], sk('startCombat', 'buffAdjacent', 2, 2)),
+  S('Grand diplomate', 5, 4, 9, ['Humain', 'Diplomate'], [], sk('startCombat', 'buffAdjacent', 3, 3)),
   // Espèce + archétype (contenu provisoire : les fiches d'espèces n'ont pas encore de section « Dans le jeu »)
   S('Aviateur elk', 2, 3, 3, ['Elk', 'Pilote'], [], sk('startCombat', 'buffLeftmost', 1, 0)),
   S('Éclaireur elk', 3, 3, 5, ['Elk', 'Explorateur'], ['ranged']),
@@ -126,12 +134,13 @@ const SERVANTS = [
 
 // skill : effet d'équipement, déclenché sur le serviteur qui le porte. Effet de renfort = permanent,
 // effet de combat = valable pour le combat seulement.
-const E = (name, rank, atk, hp, kw = null, type = null, skill = null) => ({ name, rank, atk, hp, kw, type, skill });
+// mod : modificateur d'invocation { probeA, probeH, text } (bonus donné aux sondes invoquées par le porteur).
+const E = (name, rank, atk, hp, kw = null, type = null, skill = null, mod = null) => ({ name, rank, atk, hp, kw, type, skill, mod });
 const EQUIPS = [
   E('Plaque d\'acier', 1, 0, 2), E('Lame vibrante', 1, 2, 0), E('Module d\'attaque', 1, 1, 1),
   E('Balise de combat', 2, 0, 2, 'prov', 'Sécurité'), E('Bouclier à champ', 2, 0, 1, 'shield', 'Ingénieur'),
   E('Cartouches perforantes', 2, 2, 1, null, 'Artilleur'), E('Blindage', 2, 1, 3),
-  E('Châssis d\'automate', 2, 1, 2, null, 'Roboticien'),
+  E('Châssis de sonde', 2, 1, 2, null, 'Roboticien'),
   E('Dose de neurotoxine', 3, 1, 0, 'poison', 'Xénobiologiste'), E('Canon longue portée', 3, 2, 0, 'ranged', 'Artilleur'),
   E('Implant neural', 3, 2, 2), E('Réacteur surchargé', 3, 3, 1, null, 'Ingénieur'),
   E('Brouilleur', 3, 2, 1, null, 'Renseignement'), E('Sonde d\'analyse', 3, 1, 2, 'ranged', 'Explorateur'),
@@ -146,7 +155,8 @@ const EQUIPS = [
   E('Charge de rupture', 3, 1, 0, null, 'Artilleur', sk('deathrattle', 'dmgRandomEnemy', 0, 0, 3)),
   E('Injecteur de combat', 3, 1, 1, null, 'Médecin', sk('startCombat', 'buffSelf', 3, 2)),
   E('Matrice évolutive', 4, 0, 2, null, 'Ingénieur', sk('startRenfort', 'buffSelf', 2, 2)),
-  E('Balise de commandement', 4, 0, 2, null, 'Pilote', sk('startCombat', 'buffAllies', 1, 1))
+  E('Balise de commandement', 4, 0, 2, null, 'Pilote', sk('startCombat', 'buffAllies', 1, 1)),
+  E('Chargeur de sondes', 3, 0, 1, null, 'Roboticien', null, { probeA: 1, probeH: 1, text: 'Sondes invoquées : +1/+1' })
 ];
 
 // Chaque héros a deux types : ici une espèce et un archétype (rien ne l'impose).
@@ -157,6 +167,8 @@ const HEROES = {
            power: sk('endRenfort', 'buffRandomAlly', 1, 1) },
   z9:    { id: 'z9', name: 'Z-9', types: ['Droïde', 'Roboticien'], hp: 26, kw: 'shield',
            power: sk('startRenfort', 'buffRandomAlly', 1, 0) },
+  reyes: { id: 'reyes', name: 'Amirale Reyes', types: ['Humain', 'Diplomate'], hp: 32, kw: null,
+           power: sk('startCombat', 'buffAllies', 1, 0) },
   ilya:  { id: 'ilya', name: 'Dr Ilya', types: ['Félin', 'Xénobiologiste'], hp: 28, kw: 'shield',
            power: sk('startCombat', 'dmgRandomEnemy', 0, 0, 2) }
 };

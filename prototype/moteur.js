@@ -5,7 +5,7 @@
 // =====================================================================
 function mkServant(d) {
   return { uid: uid(), name: d.name, rank: d.rank, atk: d.atk, hp: d.hp, maxhp: d.hp,
-           types: [...d.types], kw: [...d.kw], skill: d.skill, equips: [], eqSkills: [] };
+           types: [...d.types], kw: [...d.kw], skill: d.skill, equips: [], eqSkills: [], probeA: 0, probeH: 0 };
 }
 // Compétences d'un serviteur : la sienne, puis celles que ses équipements lui donnent.
 const skillsOf = s => [s.skill, ...(s.eqSkills || [])].filter(Boolean);
@@ -42,6 +42,12 @@ function applyFx(k, src, allies, enemies, say) {
       if (t) { buff(t, k.a, k.h); say(`${src.name} donne +${k.a}/+${k.h} à ${t.name}.`); }
       break;
     }
+    case 'buffAdjacent': {
+      const i = allies.indexOf(src), c = [allies[i - 1], allies[i + 1]].filter(s => s && s.hp > 0);
+      c.forEach(s => buff(s, k.a, k.h));
+      if (c.length) say(`${src.name} donne +${k.a}/+${k.h} à ${c.map(s => s.name).join(' et ')}.`);
+      break;
+    }
     case 'buffEquippedAlly': {
       const c = alive(allies).filter(s => s !== src && s.equips.length);
       if (c.length) { const t = pick(c); buff(t, k.a, k.h); say(`${src.name} donne +${k.a}/+${k.h} à ${t.name} (équipé).`); }
@@ -59,9 +65,11 @@ function applyFx(k, src, allies, enemies, say) {
     }
     case 'summon': {
       if (allies.length >= MAX_BOARD) { say(`${src.name} ne peut pas invoquer : plateau plein.`); break; }
-      const a = { uid: uid(), name: 'Automate', rank: 1, atk: k.a, hp: k.h, maxhp: k.h, types: [], kw: [], skill: null, equips: [], shield: false, reb: false };
+      // Les équipements du serviteur renforcent les sondes qu'il invoque (probeA / probeH).
+      const pa = src.probeA || 0, ph = src.probeH || 0;
+      const a = { uid: uid(), name: 'Sonde', rank: 1, atk: k.a + pa, hp: k.h + ph, maxhp: k.h + ph, types: [], kw: [], skill: null, equips: [], eqSkills: [], shield: false, reb: false };
       allies.splice(allies.indexOf(src) + 1, 0, a);
-      say(`${src.name} invoque un automate ${k.a}/${k.h} à sa droite.`); break;
+      say(`${src.name} invoque une sonde ${a.atk}/${a.hp} à sa droite.`); break;
     }
     case 'dmgRandomEnemy': {
       const c = alive(enemies);
@@ -76,6 +84,7 @@ function applyEquip(s, eq) {
   if (eq.kw && !s.kw.includes(eq.kw)) s.kw.push(eq.kw);
   s.equips.push(eq.name);
   if (eq.skill) s.eqSkills.push(eq.skill);
+  if (eq.mod) { s.probeA += eq.mod.probeA; s.probeH += eq.mod.probeH; }
 }
 
 // Combat automatique. Travaille sur des copies : les serviteurs du joueur
@@ -153,7 +162,7 @@ function runCombat(playerBoard, enemyBoard, ctx) {
     const A = nextAtk(cur), T = target(cur);
     const dA = A.atk, dT = A.kw.includes('ranged') ? 0 : T.atk;
     hit(T, dA, A); hit(A, dT, T);          // dégâts et riposte simultanés
-    say(`${A.name} attaque ${T.name} (${dA} dégâts${dT ? `, riposte ${dT}` : ', sans riposte'}).`, { att: A.uid, tgt: T.uid });
+    say(`${A.name} attaque ${T.name} (${dA} dégâts${dT ? `, riposte ${dT}` : ', sans riposte'}).`, { att: A.uid, tgt: T.uid, ranged: A.kw.includes('ranged') });
     if (ctx.dungeon.boss.power === 'regen') {
       B.e.forEach(s => { if (s.hp > 0) s.hp = Math.min(s.maxhp, s.hp + 2); });
       say('Régénération : les serviteurs du Boss récupèrent 2 PV.');
@@ -255,7 +264,7 @@ function resolveFusion(g, rf, say) {
     uid: uid(), name: `${name} doré`, rank: trio[0].rank, atk: sum('atk'), hp: sum('hp'), maxhp: sum('maxhp'),
     types: [...trio[0].types], kw: [...new Set(trio.flatMap(x => x.kw))], gold: true,
     skill: k ? { ...k, a: k.a * 2, h: k.h * 2, n: k.n * 2 } : null, equips: trio.flatMap(x => x.equips),
-    eqSkills: trio.flatMap(x => x.eqSkills || [])
+    eqSkills: trio.flatMap(x => x.eqSkills || []), probeA: trio.reduce((a, x) => a + (x.probeA || 0), 0), probeH: trio.reduce((a, x) => a + (x.probeH || 0), 0)
   };
   const ids = new Set(trio.map(x => x.uid));
   const bi = g.board.findIndex(x => ids.has(x.uid));

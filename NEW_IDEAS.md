@@ -51,7 +51,7 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 
 ## 4. Serviteurs
 
-- Un serviteur a : une **attaque**, des **PV**, un **rang**, des **mots-clés** et un ou deux **types** (section 11).
+- Un serviteur a : une **attaque**, des **PV**, un **rang**, des **mots-clés** et **deux types** : une **espèce** et un **archétype** (section 11).
 - Le rang d'un serviteur vaut les **dégâts** qu'il inflige à la fin d'un combat gagné par son camp (section 6). Exemple : rang 4 = 4 dégâts, rang 2 = 2 dégâts.
 - Un serviteur a une ou plusieurs **compétences**. Chaque compétence est soit **de combat** (active pendant un combat), soit **de renfort** (active pendant la phase de renfort), **jamais les deux**.
 - Un serviteur peut porter des **équipements** (section 8). Si le serviteur est **remplacé** par un autre, ses équipements sont **perdus** : le joueur ne les récupère pas. Ouvert : nombre maximum d'équipements par serviteur.
@@ -251,11 +251,11 @@ Détail dans `documentation/types/` : `types.md` (sommaire), `archetypes.md` et 
   - nature **archétype** (comment il se joue).
   Un héros aurait volontiers un type de chaque nature, mais rien ne l'impose.
 - Chaque **héros** a **deux types** différents.
-- Chaque **serviteur** a **un ou deux types**. Un serviteur peut avoir un type absent chez les héros (« invité ») : il apparaît alors par son autre type.
+- Chaque **serviteur** a **deux types** : une **espèce** (par défaut **Humain**) et un **archétype obligatoire** parmi les 10 archétypes. Un serviteur peut avoir un type absent chez les héros (« invité ») : il apparaît alors par son autre type.
 - Deux héros apportent jusqu'à 4 types, et chaque **donjon** apporte **un type** : **5 types** pour une partie.
 - Le pool de serviteurs et d'équipements du renfort est lié à ces 5 types.
 - Chaque type a une **thématique** : certains mots-clés sont plus présents dans certains types.
-- Les **espèces** sont des types, de nature « espèce » : **Elk** et **Dwork** (fiches dans `documentation/types/especes/`), et **Droïde**.
+- Les **espèces** sont des types, de nature « espèce » : **Humain** (espèce générique, par défaut), **Elk** et **Dwork** (fiches dans `documentation/types/especes/`), et **Droïde**.
 - Type possible : une espèce de **félins humanoïdes**, **sans nom pour le moment** (images dans `inspiration/cat/`). Fiche non rédigée.
 - **Droïde** est un **type**. Les droïdes peuvent être des héros (lieutenants), de simples membres d'équipage ou des ennemis dans certains donjons. Un droïde est un être autonome, avec une identité, à ne pas confondre avec un **drone** (section 8).
 - Ouvert : la liste des types, et le cas où les deux héros partagent un type (moins de 5 types).

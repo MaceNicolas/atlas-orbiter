@@ -2,7 +2,7 @@
 'use strict';
 // ==== UI ====
 const app = document.getElementById('app');
-const UI = { screen: 'menu', sel: { heroes: [], dungeon: 'nid' }, g: null, rf: null, pb: null, timer: null, replace: null, notice: '' };
+const UI = { screen: 'menu', sel: { heroes: [], dungeon: 'nid' }, g: null, rf: null, pb: null, timer: null, timer2: null, replace: null, notice: '', showLog: false };
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 // Pastilles de type : espèce = fond teinté, archétype = contour. Icônes et couleurs viennent de svg.js.
@@ -21,11 +21,11 @@ function servantCard(s, o = {}) {
   const ring = o.att ? 'ring-4 ring-warning' : o.tgt ? 'ring-4 ring-error' : '';
   // En combat, un Bouclier divin perdu ou une Renaissance déjà jouée restent affichés, marqués « utilisé ».
   const kwSpent = ('shield' in s) ? s.kw.filter(k => (k === 'shield' && !s.shield) || (k === 'rebirth' && !s.reb)) : [];
-  const art = AWGfx.servantCard({ ...s, kwSpent, skills: skillsOf(s).map(k => ({ text: skDesc(k), kind: TRIG_KIND[k.t] })) }, { width: '100%' });
+  const art = AWGfx.servantCard({ ...s, kwSpent, skills: [...skillsOf(s).map(k => ({ text: skDesc(k), kind: TRIG_KIND[k.t] })), ...(s.probeA || s.probeH ? [{ text: `Sondes invoquées : +${s.probeA}/+${s.probeH}`, kind: 'combat' }] : [])] }, { width: '100%' });
   return `<div class="${CARD_W} shrink-0 rounded-2xl ${ring} ${o.cls || ''}" ${o.attrs || ''}>${art}${o.extra ? `<div class="flex justify-center gap-1 mt-1">${o.extra}</div>` : ''}</div>`;
 }
 function equipCard(e, o = {}) {
-  return `<div class="${CARD_W} shrink-0 rounded-2xl ${o.cls || ''}" ${o.attrs || ''}>${AWGfx.equipCard({ ...e, skillText: e.skill ? skDesc(e.skill).replace('à lui-même', 'au porteur') : '', skillKind: e.skill ? TRIG_KIND[e.skill.t] : null }, { width: '100%' })}${o.extra ? `<div class="flex justify-center gap-1 mt-1">${o.extra}</div>` : ''}</div>`;
+  return `<div class="${CARD_W} shrink-0 rounded-2xl ${o.cls || ''}" ${o.attrs || ''}>${AWGfx.equipCard({ ...e, skillText: e.skill ? skDesc(e.skill).replace('à lui-même', 'au porteur') : (e.mod ? e.mod.text : ''), skillKind: e.skill ? TRIG_KIND[e.skill.t] : 'combat' }, { width: '100%' })}${o.extra ? `<div class="flex justify-center gap-1 mt-1">${o.extra}</div>` : ''}</div>`;
 }
 const heroesPanel = g => `<div class="flex flex-wrap gap-2">${g.heroes.map(h => `
   <div class="card card-compact bg-base-200 flex-1 min-w-[13rem] ${h.hp <= 0 ? 'opacity-50' : ''}"><div class="card-body !p-3 gap-1">
@@ -60,7 +60,7 @@ function renderMenu() {
       <div class="text-[11px] opacity-80">${esc(d.boss.desc)}</div></div></button>`).join('');
   const types = sel.heroes.length === 2 ? [...new Set([...sel.heroes.flatMap(i => HEROES[i].types), DUNGEONS[sel.dungeon].type])] : [];
   return `<h1 class="text-2xl font-bold mb-1">Atlas Wanderer <span class="badge badge-ghost">prototype</span></h1>
-  <h2 class="font-bold mb-2">1. Choisis deux héros (${sel.heroes.length}/2)</h2><div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-4 mb-4">${heroes}</div>
+  <h2 class="font-bold mb-2">1. Choisis deux héros (${sel.heroes.length}/2)</h2><div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-5 mb-4">${heroes}</div>
   <h2 class="font-bold mb-2">2. Choisis un donjon</h2><div class="grid gap-2 sm:grid-cols-2 mb-4">${dungeons}</div>
   <div class="mb-4 text-sm">${types.length ? `Types de la partie (${types.length}) : ${typeBadges(types)}` : 'Sélectionne deux héros.'}</div>
   <button class="btn btn-primary" data-act="start" ${sel.heroes.length === 2 ? '' : 'disabled'}>Partir en exploration</button>`;
@@ -129,10 +129,12 @@ function renderRenfort() {
 }
 
 function renderCombat() {
-  const g = UI.g, pb = UI.pb, f = pb.res.frames[pb.i];
-  const row = list => list.length ? list.map(s => servantCard(s, { att: f.hl.att === s.uid, tgt: f.hl.tgt === s.uid })).join('') : '<div class="opacity-50 text-sm p-6">— vide —</div>';
+  const g = UI.g, pb = UI.pb, cur = pb.res.frames[pb.i], prev = pb.res.frames[pb.i - 1];
+  // Avant l'impact d'une attaque, on montre encore l'état précédent (la charge se joue sur ces cartes).
+  const f = pb.phase === 'pre' && prev ? { p: prev.p, e: prev.e, hl: cur.hl } : cur;
+  const row = list => list.length ? list.map(s => servantCard(s, { att: f.hl.att === s.uid, tgt: f.hl.tgt === s.uid, attrs: `data-uid="${s.uid}"` })).join('') : '<div class="opacity-50 text-sm p-6">— vide —</div>';
   const log = pb.res.frames.slice(0, pb.i + 1).map(x => x.msg).slice(-60);
-  const speeds = [['Lent', 900], ['Normal', 450], ['Rapide', 150]];
+  const speeds = [['Lent', 1100], ['Normal', 700], ['Rapide', 300]];
   return `${header(g)}
   ${UI.notice ? `<div class="alert alert-success mb-3 text-sm">${esc(UI.notice)}</div>` : ''}
   ${bossPanel(g)}
@@ -146,8 +148,9 @@ function renderCombat() {
   <div class="flex flex-wrap items-center gap-2 mb-2">
     ${pb.done ? '' : `<div class="join">${speeds.map(([n, v]) => `<button class="btn btn-sm join-item ${pb.speed === v ? 'btn-active' : ''}" data-act="speed" data-v="${v}">${n}</button>`).join('')}</div>
     <button class="btn btn-sm btn-outline" data-act="skip">Passer l'animation</button>`}
-    <span class="text-xs opacity-60">Image ${pb.i + 1}/${pb.res.frames.length}</span></div>
-  <div id="log" class="bg-base-200 rounded-box p-3 h-48 overflow-y-auto text-sm font-mono space-y-0.5">${log.map(esc).join('<br>')}</div>
+    <button class="btn btn-sm btn-ghost" data-act="toggleLog">${UI.showLog ? 'Masquer le journal' : 'Journal'}</button>
+    ${UI.showLog ? `<span class="text-xs opacity-60">Image ${pb.i + 1}/${pb.res.frames.length}</span>` : ''}</div>
+  ${UI.showLog ? `<div id="log" class="bg-base-200 rounded-box p-3 h-48 overflow-y-auto text-sm font-mono space-y-0.5">${log.map(esc).join('<br>')}</div>` : ''}
   ${pb.done ? `<div class="alert ${pb.res.winner === 'p' ? 'alert-success' : pb.res.winner === 'e' ? 'alert-error' : 'alert-warning'} mt-3">
     <div><div class="font-bold">${pb.res.winner === 'p' ? 'Combat gagné' : pb.res.winner === 'e' ? 'Combat perdu' : 'Égalité'}</div>
     ${pb.lines.map(l => `<div class="text-sm">${esc(l)}</div>`).join('')}</div></div>
@@ -177,21 +180,31 @@ function render() {
 // ---------- Déroulement ----------
 function startCombatUI() {
   const res = runCombat(UI.g.board, genEnemies(UI.g), UI.g);
-  UI.pb = { res, i: 0, speed: 450, done: false, lines: null };
-  UI.screen = 'combat'; render(); schedule();
+  UI.pb = { res, i: 0, speed: UI.pb ? UI.pb.speed : 700, done: false, lines: null, phase: 'hit', lunge: null };
+  UI.screen = 'combat'; showFrame();
 }
-function schedule() {
-  clearTimeout(UI.timer);
+// Une image du combat. Une attaque se joue en deux temps : la carte charge (état précédent affiché),
+// puis l'impact (nouvel état affiché, tremblement, chiffres flottants). Les autres images n'ont qu'un temps.
+function showFrame() {
+  clearTimeout(UI.timer); clearTimeout(UI.timer2);
+  const pb = UI.pb, f = pb.res.frames[pb.i], prev = pb.res.frames[pb.i - 1];
+  const attack = !!prev && f.hl.att != null;
+  if (attack) {
+    pb.phase = 'pre'; render(); playLunge(f);
+    UI.timer2 = setTimeout(() => { pb.phase = 'hit'; render(); playImpact(prev, f); }, pb.speed * 0.4);
+  } else {
+    pb.phase = 'hit'; render(); if (prev) playImpact(prev, f);
+  }
+  UI.timer = setTimeout(nextFrame, attack ? pb.speed : pb.speed * 0.6);
+}
+function nextFrame() {
   const pb = UI.pb;
-  if (!pb || pb.done) return;
-  UI.timer = setTimeout(() => {
-    if (pb.i < pb.res.frames.length - 1) pb.i++;
-    if (pb.i >= pb.res.frames.length - 1) finishPb(); else { render(); schedule(); }
-  }, pb.speed);
+  if (pb.i < pb.res.frames.length - 1) pb.i++;
+  if (pb.i >= pb.res.frames.length - 1) finishPb(); else showFrame();
 }
 function finishPb() {
-  const pb = UI.pb; clearTimeout(UI.timer);
-  pb.i = pb.res.frames.length - 1;
+  const pb = UI.pb; clearTimeout(UI.timer); clearTimeout(UI.timer2);
+  pb.i = pb.res.frames.length - 1; pb.phase = 'hit';
   pb.lines = settleCombat(UI.g, pb.res); pb.done = true; render();
 }
 function openRenfort() {
@@ -207,7 +220,8 @@ const ACT = {
   selHero(d) { const h = UI.sel.heroes, i = h.indexOf(d.id); if (i >= 0) h.splice(i, 1); else if (h.length < 2) h.push(d.id); render(); },
   selDungeon(d) { UI.sel.dungeon = d.id; render(); },
   start() { UI.g = newGame(UI.sel.heroes, UI.sel.dungeon); UI.notice = ''; openRenfort(); },
-  speed(d) { UI.pb.speed = +d.v; render(); schedule(); },
+  speed(d) { UI.pb.speed = +d.v; render(); },
+  toggleLog() { UI.showLog = !UI.showLog; render(); },
   skip() { finishPb(); },
   next() { UI.notice = ''; if (UI.g.over) { UI.screen = 'end'; render(); } else openRenfort(); },
   // Chaque achat coûte 1 Datacron, payé à l'ouverture du choix (pas d'annulation : pas de relance gratuite).
@@ -274,7 +288,7 @@ const ACT = {
     const msgs = []; renfortFx(UI.g, 'endRenfort', m => msgs.push(m));
     UI.notice = msgs.join(' '); startCombatUI();
   },
-  restart() { clearTimeout(UI.timer); UI.screen = 'menu'; UI.sel.heroes = []; render(); }
+  restart() { clearTimeout(UI.timer); clearTimeout(UI.timer2); UI.screen = 'menu'; UI.sel.heroes = []; render(); }
 };
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-act]');

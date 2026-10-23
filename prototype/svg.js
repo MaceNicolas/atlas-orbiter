@@ -6,8 +6,9 @@
   'use strict';
 
   // ---------- Couleurs ----------
-  const SPECIES = ['Elk', 'Dwork', 'Droïde', 'Félin'];
-  const SPECIES_COLOR = { 'Elk': '#d9a441', 'Dwork': '#c4622d', 'Droïde': '#4fb3d9', 'Félin': '#b57bee' };
+  const SPECIES = ['Humain', 'Elk', 'Dwork', 'Droïde', 'Félin'];
+  // Humain : espèce générique, en gris argenté neutre. Aucune couleur n'est dorée (l'or est réservé aux dorés).
+  const SPECIES_COLOR = { 'Humain': '#b4bcc9', 'Elk': '#e56b9a', 'Dwork': '#c4622d', 'Droïde': '#4fb3d9', 'Félin': '#b57bee' };
   // Les archétypes suivent les trois familles de documentation/types/archetypes.md.
   const FAMILY_COLOR = { navigation: '#4f8cff', soutien: '#46c28a', tactique: '#e8604c' };
   const ARCH_FAMILY = {
@@ -25,6 +26,7 @@
   const line = (c, body) => `<g fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${body}</g>`;
   const ICONS = {
     // --- Espèces : silhouettes pleines ---
+    'Humain': c => `<circle cx="12" cy="7.6" r="4.4" fill="${c}"/><path d="M3.6 21.4 C3.6 15.6 7.6 13.4 12 13.4 C16.4 13.4 20.4 15.6 20.4 21.4 Z" fill="${c}"/>`,
     'Elk': (c, b) => `<ellipse cx="13" cy="12.5" rx="5.8" ry="7.2" fill="${c}"/>
       <path d="M18 9 L23.2 5 L20.2 13.6 Z" fill="${c}"/>
       <path d="M8.5 5.5 C2.2 5.5 1.8 14.5 5 20.8 L8.2 19.2 C6 15.2 6.4 10.5 9.8 9 Z" fill="${c}"/>
@@ -125,9 +127,9 @@
     }).join('');
   }
 
-  // Couleur d'accent d'une carte : l'espèce si elle existe, sinon l'archétype ; or pour un doré.
-  function accentOf(types, gold) {
-    if (gold) return UI.gold;
+  // Couleur d'accent d'une carte : l'espèce si elle existe, sinon l'archétype. Aucune n'est dorée :
+  // l'or est réservé au contour des serviteurs dorés.
+  function accentOf(types) {
     const sp = types.find(isSpecies);
     return typeColor(sp || types[0]);
   }
@@ -155,7 +157,7 @@
   // Chaque mot-clé est écrit sur la carte (nom + rappel de règle). Un mot-clé déjà consommé
   // (Bouclier divin perdu, Renaissance jouée) reste visible mais grisé et barré.
   function servantCard(s, o = {}) {
-    const id = 'g' + (++GID), types = s.types.length ? s.types : [], col = accentOf(types, s.gold);
+    const id = 'g' + (++GID), types = s.types.length ? s.types : [], col = accentOf(types);
     const maxhp = s.maxhp || s.hp, hurt = s.hp < maxhp, W = 200, H = 330;
     const name = String(s.name), fs = name.length > 22 ? 10 : name.length > 17 ? 11.5 : 13.5;
     const kw = (s.kw || []).filter(k => KW_LABEL[k]), spent = s.kwSpent || [];
@@ -170,18 +172,17 @@
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${o.width || W}" font-family="${FONT}"${dead}>
       <defs>
         <linearGradient id="${id}a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".42"/><stop offset="1" stop-color="${UI.cardDeep}"/></linearGradient>
-        <linearGradient id="${id}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${s.gold ? '#fff2b0' : col}"/><stop offset=".5" stop-color="${col}"/><stop offset="1" stop-color="${s.gold ? '#b8860b' : col}" stop-opacity=".6"/></linearGradient>
+        <linearGradient id="${id}b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${s.gold ? '#fff2b0' : col}"/><stop offset=".5" stop-color="${s.gold ? UI.gold : col}"/><stop offset="1" stop-color="${s.gold ? '#b8860b' : col}" stop-opacity="${s.gold ? 1 : .6}"/></linearGradient>
         <radialGradient id="${id}c" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
       </defs>
       <rect x="1.5" y="1.5" width="${W - 3}" height="${H - 3}" rx="15" fill="${UI.card}" stroke="url(#${id}b)" stroke-width="3"/>
-      <rect x="7" y="7" width="${W - 14}" height="${H - 14}" rx="11" fill="none" stroke="${col}" stroke-opacity=".25"/>
+      <rect x="7" y="7" width="${W - 14}" height="${H - 14}" rx="11" fill="none" stroke="${s.gold ? UI.gold : col}" stroke-opacity="${s.gold ? 1 : .25}" stroke-width="${s.gold ? 2 : 1}"/>
       ${shieldUp ? `<rect x="-2" y="-2" width="${W + 4}" height="${H + 4}" rx="18" fill="none" stroke="${SHIELD}" stroke-width="3" stroke-opacity=".9"/><rect x="3" y="3" width="${W - 6}" height="${H - 6}" rx="13" fill="none" stroke="${SHIELD}" stroke-width="1.2" stroke-opacity=".6" stroke-dasharray="5 4"/>` : ''}
-      <text x="14" y="27" font-size="${fs}" font-weight="700" fill="${s.gold ? UI.gold : UI.text}">${esc(name)}</text>
+      <text x="14" y="27" font-size="${fs}" font-weight="700" fill="${UI.text}">${esc(name)}</text>
       <rect x="12" y="${artY}" width="176" height="${artH}" rx="9" fill="url(#${id}a)" stroke="${col}" stroke-opacity=".5"/>
       <g clip-path="inset(${artY}px 12px ${H - artY - artH}px 12px round 9px)" opacity=".12" stroke="${col}">${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => `<path d="M${12 + i * 24} ${artY} l-40 ${artH}"/>`).join('')}</g>
       ${artwork(types, col, 100, artY + artH / 2, id)}
       ${pips(s.rank, 176, artY + 12, col)}
-      ${s.gold ? `<text x="20" y="${artY + 18}" font-size="11" font-weight="700" fill="${UI.gold}">★ doré</text>` : ''}
       ${chipRow(types, chipsY)}
       ${kw.map((k, i) => {
         const y = textY + i * rowH, off = spent.includes(k), c = off ? UI.muted : (k === 'shield' ? SHIELD : UI.text);
