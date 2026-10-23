@@ -24,7 +24,7 @@ Session du 22 au 23 octobre 2026. Ce fichier résume où en est le projet, ce qu
 ### Types (prototype uniquement, pas encore dans `NEW_IDEAS.md`)
 
 - Les types provisoires du premier jet sont remplacés par les types documentés dans `documentation/types/` :
-  - **Espèces** : Humain (générique, par défaut), Elk, Dwork, Droïde, Félin (nom provisoire).
+  - **Espèces** : Alien (générique, par défaut), Elk, Dwork, Droïde, Félin (nom provisoire).
   - **Archétypes** : les dix, dont le Diplomate (bonus aux alliés adjacents).
   - **Règle** : chaque serviteur a une espèce et un archétype obligatoire. Les héros en ont aussi un de chaque.
 - Contenu du prototype : 62 serviteurs (une gamme de 5 rangs par archétype avec des espèces réparties, plus 12 espèce + archétype), 5 héros (un par espèce, chacun avec un archétype), 2 donjons (le Nid de la Reine apporte Xénobiologiste, la Station Oméga apporte Droïde).

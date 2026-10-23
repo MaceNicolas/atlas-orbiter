@@ -6,8 +6,37 @@
 <title>Atlas Wanderer – Prototype</title>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css">
 <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<style>
+  /* Glisser-déposer : repères de dépôt */
+  .drop-l { box-shadow: -8px 0 0 0 #3b82f6; }
+  .drop-r { box-shadow: 8px 0 0 0 #3b82f6; }
+  .drop-on { outline: 4px solid #3b82f6; outline-offset: 2px; }
+  .drop-zone { outline: 3px dashed #3b82f6; outline-offset: 4px; border-radius: 1rem; }
+  /* Fond : espace noir, étoiles fixes et deux couches qui scintillent */
+  body { background: #02030a; }
+  .espace, .espace::before, .espace::after { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .espace { background:
+    radial-gradient(1px 1px at 8% 14%, #fff, transparent), radial-gradient(1px 1px at 22% 62%, #cfe3ff, transparent),
+    radial-gradient(1.5px 1.5px at 35% 28%, #fff, transparent), radial-gradient(1px 1px at 48% 80%, #fff, transparent),
+    radial-gradient(1px 1px at 61% 18%, #ffe9c4, transparent), radial-gradient(1.5px 1.5px at 74% 52%, #fff, transparent),
+    radial-gradient(1px 1px at 86% 86%, #cfe3ff, transparent), radial-gradient(1px 1px at 93% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 15% 90%, #fff, transparent), radial-gradient(1px 1px at 55% 45%, #cfe3ff, transparent),
+    radial-gradient(ellipse at 20% 0%, #0b1030 0%, transparent 55%), radial-gradient(ellipse at 90% 100%, #1a0b2e 0%, transparent 50%), #02030a; }
+  .espace::before, .espace::after { content: ''; animation: scintille 4s ease-in-out infinite; }
+  .espace::before { background:
+    radial-gradient(2px 2px at 12% 40%, #fff, transparent), radial-gradient(2px 2px at 40% 10%, #fff, transparent),
+    radial-gradient(2px 2px at 68% 70%, #fff, transparent), radial-gradient(2.5px 2.5px at 90% 12%, #fff, transparent),
+    radial-gradient(2px 2px at 28% 85%, #cfe3ff, transparent); }
+  .espace::after { animation-delay: -2s; background:
+    radial-gradient(2px 2px at 4% 70%, #fff, transparent), radial-gradient(2.5px 2.5px at 30% 52%, #ffe9c4, transparent),
+    radial-gradient(2px 2px at 52% 92%, #fff, transparent), radial-gradient(2px 2px at 80% 40%, #fff, transparent),
+    radial-gradient(2px 2px at 96% 62%, #cfe3ff, transparent); }
+  @keyframes scintille { 0%, 100% { opacity: .15; } 50% { opacity: 1; } }
+  #app { position: relative; z-index: 1; }
+</style>
 </head>
-<body class="min-h-screen bg-base-300">
+<body class="min-h-screen">
+<div class="espace"></div>
 <div id="app" class="mx-auto max-w-[1320px] p-3 sm:p-5"></div>
 
 <script src="svg.js"></script>

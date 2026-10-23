@@ -1,4 +1,4 @@
-# Fiche d'espèce : les Humains
+# Fiche d'espèce : les Aliens
 
 Espèce **générique**, par défaut. Les éléments non arrêtés sont marqués **[à définir]**.
 
@@ -6,16 +6,16 @@ Espèce **générique**, par défaut. Les éléments non arrêtés sont marqués
 
 | | |
 |---|---|
-| **Nom** | Humain |
+| **Nom** | Alien |
 | **Type** | Peuple humanoïde |
 | **Univers** | Atlas Wanderer |
-| **Rôle dans le jeu** | Espèce par défaut : tout serviteur a une espèce, et l'Humain est celle qui ne ressort pas |
+| **Rôle dans le jeu** | Espèce par défaut : tout serviteur a une espèce, et l'Alien est celle qui ne ressort pas |
 | **Silhouette** | Humanoïde ordinaire **[à définir]** |
 | **Traits distinctifs** | Aucun voulu : c'est la référence des autres espèces |
 
 ## 2. Dans le jeu
 
-- Chaque serviteur a **une espèce** et **un archétype obligatoire** (section 4 de `NEW_IDEAS.md`). L'Humain évite que chaque carte doive inventer une espèce exotique.
+- Chaque serviteur a **une espèce** et **un archétype obligatoire** (section 4 de `NEW_IDEAS.md`). L'Alien évite que chaque carte doive inventer une espèce exotique.
 - Thématique et mots-clés plus présents : aucun en particulier **[à définir]**. L'espèce reste neutre pour que l'archétype porte l'identité de combat.
 - Archétypes associés : tous.
 

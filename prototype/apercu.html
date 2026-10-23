@@ -42,10 +42,10 @@ const SERVANTS = [
   { name: 'Gardien de chantier', rank: 3, atk: 3, hp: 8, types: ['Dwork', 'Sécurité'], kw: ['prov'] },
   { name: 'Droïde de combat', rank: 4, atk: 4, hp: 7, maxhp: 9, kwSpent: ['shield'], types: ['Droïde', 'Sécurité'], kw: ['prov', 'shield'], skillText: "Râle d'agonie : +1/+0 aux autres alliés", equips: ['Plaque d\'acier'] },
   { name: 'Pilote félin', rank: 4, atk: 5, hp: 4, types: ['Félin', 'Pilote'], kw: ['shield'], skillText: "Début de combat : +2/+0 à l'allié le plus à gauche" },
-  { name: 'Spécialiste des organismes', rank: 2, atk: 1, hp: 3, types: ['Humain', 'Xénobiologiste'], kw: ['poison'] },
-  { name: "Opérateur d'essaim", rank: 2, atk: 2, hp: 3, types: ['Humain', 'Roboticien'], kw: [], skillText: "Début de combat : invoque une sonde 1/1 à sa droite" },
-  { name: 'Sondeur planétaire', rank: 2, atk: 2, hp: 4, types: ['Humain', 'Explorateur'], kw: [], skillText: 'Début de combat : +1/+0 par type différent dans votre équipe (max 3)' },
-  { name: 'Maître des mutations doré', rank: 5, atk: 18, hp: 24, types: ['Humain', 'Xénobiologiste'], kw: ['poison', 'rebirth'], skillText: 'Début de combat : 6 dégâts à un ennemi aléatoire', gold: true }
+  { name: 'Spécialiste des organismes', rank: 2, atk: 1, hp: 3, types: ['Alien', 'Xénobiologiste'], kw: ['poison'] },
+  { name: "Opérateur d'essaim", rank: 2, atk: 2, hp: 3, types: ['Alien', 'Roboticien'], kw: [], skillText: "Début de combat : invoque une sonde 1/1 à sa droite" },
+  { name: 'Sondeur planétaire', rank: 2, atk: 2, hp: 4, types: ['Alien', 'Explorateur'], kw: [], skillText: 'Début de combat : +1/+0 par type différent dans votre équipe (max 3)' },
+  { name: 'Maître des mutations doré', rank: 5, atk: 18, hp: 24, types: ['Alien', 'Xénobiologiste'], kw: ['poison', 'rebirth'], skillText: 'Début de combat : 6 dégâts à un ennemi aléatoire', gold: true }
 ];
 $('cards').innerHTML = SERVANTS.map(s => `<div class="card">${G.servantCard(s)}</div>`).join('');
 const EQUIPS = [

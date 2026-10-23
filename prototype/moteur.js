@@ -131,6 +131,9 @@ function runCombat(playerBoard, enemyBoard, ctx) {
     const v = Math.floor((ctx.room - 1) / 3);
     if (v > 0) { B.e.forEach(s => { s.atk += v; s.hp += v; s.maxhp += v; }); say(`${ctx.dungeon.boss.name} : Surcharge, ses serviteurs gagnent +${v}/+${v}.`); }
   }
+  if (ctx.dungeon.boss.power === 'plate') {
+    B.e.forEach(s => { s.hp += 3; s.maxhp += 3; }); say(`${ctx.dungeon.boss.name} : Blindage, ses serviteurs gagnent +0/+3.`);
+  }
   deaths();
 
   const Q = { p: [], e: [] };
@@ -161,6 +164,7 @@ function runCombat(playerBoard, enemyBoard, ctx) {
     }
     const A = nextAtk(cur), T = target(cur);
     const dA = A.atk, dT = A.kw.includes('ranged') ? 0 : T.atk;
+    if (cur === 'e' && ctx.dungeon.boss.power === 'frenzy') { A.atk += 1; say(`Écho : ${A.name} gagne +1 ATQ.`); }
     hit(T, dA, A); hit(A, dT, T);          // dégâts et riposte simultanés
     say(`${A.name} attaque ${T.name} (${dA} dégâts${dT ? `, riposte ${dT}` : ', sans riposte'}).`, { att: A.uid, tgt: T.uid, ranged: A.kw.includes('ranged') });
     if (ctx.dungeon.boss.power === 'regen') {
@@ -180,9 +184,13 @@ function newGame(heroIds, dungeonId) {
   const dungeon = DUNGEONS[dungeonId];
   const heroes = heroIds.map(id => ({ def: HEROES[id], hp: HEROES[id].hp, maxhp: HEROES[id].hp }));
   const types = [...new Set([...heroes.flatMap(h => h.def.types), dungeon.type])];
+  // Deux types cachés, tirés au hasard à chaque partie, s'ajoutent à celui du donjon pour le Boss.
+  const bossTypes = [...SPECIES, ...ARCHETYPES].filter(t => t !== dungeon.type).sort(() => Math.random() - 0.5).slice(0, 2);
   return {
     heroes, dungeon, types,
     boss: { name: dungeon.boss.name, hp: dungeon.boss.hp, maxhp: dungeon.boss.hp },
+    bossTypes, bossTeams: BOSS_BOARDS.map(b => makeTeam([dungeon.type, ...bossTypes], b.malus)),
+    bossCur: -1, bossLast: -1, bossLog: [],
     board: [],                    // règle : on commence sans serviteur sur le plateau
     room: 1, level: 1, counter: 0, over: null,
     hand: [], datacrons: 0, stats: { earned: 0, servants: 0, equips: 0, contrib: 0, fusions: 0, discarded: 0 }
@@ -190,23 +198,73 @@ function newGame(heroIds, dungeonId) {
 }
 const levelCost = lvl => lvl + 1;    // niveau N -> N+1 : N+1 Datacrons de contribution (provisoire)
 
-function genEnemies(g) {
-  const k = g.room;
-  const n = Math.min(MAX_BOARD, ENEMY.startCount + Math.floor((k - 1) / ENEMY.countStep));
-  const maxR = Math.min(5, 1 + Math.floor((k - 1) / ENEMY.rankStep));
-  const bonus = k >= ENEMY.bonusFrom ? 1 + Math.floor((k - ENEMY.bonusFrom) / ENEMY.bonusStep) : 0;
-  const others = ARCHETYPES.filter(t => t !== g.dungeon.type);   // archétypes : garantissent des serviteurs de rang 1
-  const types = [g.dungeon.type, ...others.sort(() => Math.random() - 0.5).slice(0, 2)];
-  const pool = SERVANTS.filter(s => s.types.some(t => types.includes(t)));
-  const out = [];
-  for (let i = 0; i < n; i++) {
-    const r = Math.random() < 0.6 ? maxR : 1 + rand(maxR);
-    let c = pool.filter(s => s.rank === r);
-    if (!c.length) c = pool.filter(s => s.rank <= r);
-    if (!c.length) c = pool;
-    const e = mkServant(pick(c)); e.atk += bonus; e.hp += bonus; e.maxhp += bonus; out.push(e);
+// ---------- Plateaux du Boss ----------
+// Chaque plateau est un « joueur » automatique, avec sa main, son niveau de renfort et ses Datacrons.
+// Il utilise les mêmes fonctions que le joueur (tirage de 3 cartes, pose, équipement, fusion).
+function makeTeam(types, malus) {
+  return { types, malus, heroes: [], board: [], hand: [], level: 1, counter: 0, datacrons: 0,
+           stats: { earned: 0, servants: 0, equips: 0, contrib: 0, fusions: 0, discarded: 0 } };
+}
+const powerOf = s => s.rank * 10 + s.atk + s.hp + (s.equips ? s.equips.length * 2 : 0);
+const cardScore = c => c.rank * 10 + c.atk + c.hp + (c.kw ? (Array.isArray(c.kw) ? c.kw.length : 1) * 3 : 0) + (c.skill ? 4 : 0);
+const bestOf = cards => cards.reduce((b, c) => (cardScore(c) > cardScore(b) ? c : b));
+
+// Pose ce que la main contient : serviteurs sur le plateau (ou à la place du plus faible s'il est plein),
+// équipements sur le serviteur le plus fort ; le reste est jeté.
+function aiPlace(t, say) {
+  for (let i = t.hand.length - 1; i >= 0; i--) {
+    const h = t.hand[i];
+    if (h.kind === 'servant') {
+      if (t.board.length < MAX_BOARD) placeServant(t, i, null, say);
+      else {
+        const wi = t.board.reduce((w, s, j) => (powerOf(s) < powerOf(t.board[w]) ? j : w), 0);
+        if (powerOf(h.s) > powerOf(t.board[wi])) placeServant(t, i, wi, say); else { t.hand.splice(i, 1); t.stats.discarded++; }
+      }
+    } else if (t.board.length) {
+      const target = t.board.reduce((b, s) => (powerOf(s) > powerOf(b) ? s : b));
+      applyEquip(target, h.def); t.hand.splice(i, 1);
+    }
   }
-  return out;
+}
+
+function aiRenfort(t, room, say) {
+  const inc = Math.max(1, incomeFor(room) - (t.malus >= 1 ? 1 : Math.random() < t.malus ? 1 : 0));
+  t.datacrons += inc; t.stats.earned += inc;
+  renfortFx(t, 'startRenfort', say);
+  const rf = { reward: null };
+  const want = Math.min(MAX_BOARD, 3 + Math.floor(room / 2));
+  for (let guard = 0; t.datacrons >= 1 && guard < 40; guard++) {
+    const held = t.board.length + t.hand.filter(h => h.kind === 'servant').length;
+    let act;
+    if (held < want) act = 'servant';
+    else if (t.level < MAX_LEVEL && t.level < 1 + Math.floor(room / 3)) act = 'level';
+    else act = t.board.length && Math.random() < 0.4 ? 'equip' : 'servant';
+    t.datacrons--;
+    if (act === 'level') {
+      t.counter++;
+      if (t.counter >= levelCost(t.level)) { t.counter -= levelCost(t.level); t.level++; if (t.level >= MAX_LEVEL) t.counter = 0; }
+      continue;
+    }
+    const card = bestOf(drawCards(t, act, t.level));
+    if (!card) continue;
+    t.hand.push(act === 'servant' ? { kind: 'servant', s: mkServant(card) } : { kind: 'equip', def: card });
+    aiPlace(t, say);
+    for (let f = 0; f < 5 && resolveFusion(t, rf, say); f++) {
+      if (rf.reward) { t.hand.push({ kind: 'servant', s: mkServant(bestOf(rf.reward.cards)) }); rf.reward = null; }
+      aiPlace(t, say);
+    }
+  }
+  renfortFx(t, 'endRenfort', say);
+}
+
+// Au début de chaque salle, les trois plateaux se renforcent, puis le Boss en présente un,
+// toujours différent de celui de la salle précédente.
+function bossRenfort(g) {
+  g.bossLog = [];
+  g.bossTeams.forEach((t, i) => aiRenfort(t, g.room, m => g.bossLog.push(`[Plateau ${i + 1}] ${m}`)));
+  const choices = [0, 1, 2].filter(i => i !== g.bossLast);
+  g.bossCur = pick(choices); g.bossLast = g.bossCur;
+  g.bossLog.push(`Le Boss présente le plateau ${g.bossCur + 1}.`);
 }
 
 // Tirage d'un choix du renfort : 3 cartes au hasard dans un pool infini, rang max = maxRank,
