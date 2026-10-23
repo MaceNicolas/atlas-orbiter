@@ -19,7 +19,8 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 - **Serviteur** : élément posé sur le plateau, qui combat. Les serviteurs du joueur représentent les héros, ceux du Boss représentent le donjon.
 - **Plateau** : zone où les serviteurs de deux camps se font face, alignés de gauche à droite. Il n'y a pas de lignes. Il contient au maximum **7 serviteurs par camp**.
 - **Camp** : ensemble des serviteurs d'un même côté du plateau.
-- **Salle** : une étape du donjon, qui correspond à un combat contre les serviteurs du Boss.
+- **Salle** : une étape du donjon, qui correspond à un combat contre l'un des trois plateaux du Boss.
+- **Plateau du Boss** : le Boss en possède trois, indépendants, que le jeu renforce comme un joueur (section 5).
 - **Renfort** : phase qui précède chaque combat, y compris le premier, où le joueur dépense sa monnaie pour recruter des serviteurs, acquérir des équipements ou faire monter le niveau de renfort.
 - **Datacron** : monnaie unique du renfort (nom provisoire, section 8).
 - **Main** : réserve de serviteurs et d'équipements acquis, que le joueur pose ensuite lui-même sur le plateau (section 8).
@@ -32,7 +33,7 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 
 1. Le joueur choisit **deux héros** de l'équipage et un **donjon**.
 2. Le plateau du joueur commence **vide** : les héros n'ont **pas de serviteur attitré** pour le moment, et les premiers serviteurs viennent du premier renfort.
-3. Le donjon est une suite de **salles**. Les premières sont **petites** : deux ou trois serviteurs ennemis.
+3. Le donjon est une suite de **salles**. Les premières sont **petites** parce que les plateaux du Boss démarrent vides et se renforcent comme celui du joueur (section 5).
 4. Chaque salle commence par un **renfort**, **y compris la première** : le donjon débute donc par un renfort. Le joueur reçoit des **Datacrons** (leur nombre dépend de la salle) et les dépense (section 8) :
    - **choisir un serviteur** parmi 3 ;
    - **choisir un équipement** parmi 3 ;
@@ -43,7 +44,7 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
    - **victoire** : les PV du Boss tombent à 0 ;
    - **défaite** : les PV des deux héros sont à 0.
 
-- Les serviteurs ennemis peuvent être **différents à chaque salle** : il n'y a pas de retour des serviteurs ennemis morts, chaque salle a sa propre composition.
+- Les serviteurs ennemis viennent de l'un des **trois plateaux du Boss**, qui se renforcent avant chaque salle ; la composition n'est plus tirée salle par salle (section 5). Les serviteurs ennemis morts reviennent au combat suivant, comme ceux du joueur.
 - **Début de donjon** : commencer par un renfort donne au joueur un premier choix avant tout combat.
 - **Entre deux combats** : les serviteurs du joueur morts reviennent pour le combat suivant, et les PV du Boss ne se soignent pas.
 
@@ -94,6 +95,24 @@ Légende : une mention **(à valider)** marque une déduction de rédaction non 
 - Le Boss n'est pas sur le plateau : ses serviteurs le représentent dans chaque salle.
 - Pouvoirs variés, passifs ou sorts. Exemples : empêcher d'infliger moins de 5 points de dégâts ; soigner les serviteurs de 2 points après chaque attaque.
 - Comme ceux des héros, ses pouvoirs peuvent agir pendant le combat, au début ou à la fin du combat, au début ou à la fin du renfort.
+
+### Plateaux et types du Boss
+
+- Le Boss joue **trois plateaux** différents, **totalement indépendants** : chacun a sa main, son niveau de renfort et ses Datacrons, et ne partage rien avec les deux autres.
+- **Renfort** : avant chaque salle, y compris la première, les **trois plateaux** se renforcent **exactement comme un joueur** : tirage de 3 cartes, choix, pose, équipement, fusion et montée de niveau, avec les mêmes règles et le même pool (section 8). Le jeu fait ces choix automatiquement.
+- **Plateau présenté** : à chaque salle, le Boss présente **un seul** plateau, **toujours différent** de celui de la salle précédente. Le joueur sait quel plateau est joué (« plateau n sur 3 ») mais ne connaît pas le contenu des deux autres.
+- **Revenu réduit par conception** : les plateaux du Boss doivent être un peu plus faibles que le joueur, ce qui aide l'équilibre :
+  - un plateau gagne **toujours 1 Datacron de moins** que le joueur ;
+  - un plateau gagne **1 Datacron de moins une fois sur deux** ;
+  - un plateau gagne **autant de Datacrons** que le joueur.
+  - Chaque plateau garde au moins 1 Datacron par salle.
+- **Types cachés** : en plus du type de son donjon, le Boss a **deux types supplémentaires, cachés et tirés au hasard à chaque partie**. Son pool de serviteurs et d'équipements est lié à ces trois types, et le joueur ne les connaît pas.
+- Ouvert :
+  - la façon dont le jeu choisit ses cartes (aujourd'hui : la meilleure proposition, un plateau rempli puis des niveaux de renfort réguliers) et s'il faut des Boss aux comportements différents ;
+  - l'information donnée au joueur : types cachés révélés par la salle des cartes (section 9) ou par un pouvoir ?
+  - les valeurs de revenu réduit, à régler après des parties jouées ;
+  - l'effet de la mort des héros sur ces plateaux : aucun pour le moment ;
+  - le lien avec le nombre de salles d'un donjon : avec des plateaux qui progressent à chaque salle, la longueur dépend surtout des PV du Boss.
 
 ## 6. Combat
 
